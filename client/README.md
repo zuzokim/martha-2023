@@ -4,14 +4,12 @@
 
 - to install dependencies
 
-        ```
-        npm install
-
-        ```
+  ```
+  npm install
+  ```
 
 - to run the app (default port is: `5173`)
 
-        ```
-        npm run dev
-
-        ```
+  ```
+  npm run dev
+  ```
