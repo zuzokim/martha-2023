@@ -1,13 +1,11 @@
 # MARTHA - 2023
 
-## client
+## [client](https://github.com/zuzokim/martha-2023/blob/main/client)
+- 
 
-- [client/README.md](https://github.com/zuzokim/martha-2023/blob/main/client/README.md)
+## [servers](https://github.com/zuzokim/martha-2023/tree/main/servers)
+- 
 
-## servers
-
-#### real-time-server 
-  - [real-time-server/README.md](https://github.com/zuzokim/martha-2023/blob/main/servers/real-time-server/README.md)
+#### [real-time-server](https://github.com/zuzokim/martha-2023/tree/main/servers/real-time-server) 
 
 #### open-ai-server
-  - 
