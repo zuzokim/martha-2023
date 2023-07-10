@@ -25,9 +25,12 @@
   --martha-font-arita-dotum-medium: "Arita-dotum-Medium";
   --martha-font-kobpubworld: "KoPubWorld";
   --martha-primary-bg-color: #e6f8ff;
-  --martha-secondary-bg-color: #FF0604;
+  --martha-secondary-bg-color: #ff0604;
   background-color: var(--martha-primary-bg-color);
 }
 
 body {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
