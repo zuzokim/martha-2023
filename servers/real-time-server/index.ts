@@ -25,7 +25,7 @@ const io = new Server(server, {
   },
 });
 
-io.on("connection", (socket: any) => {
+io.on("connect", (socket: any) => {
   console.log("🐸socket connected!");
 
   socket.on("disconnect", (reason: any) => {
@@ -35,6 +35,24 @@ io.on("connection", (socket: any) => {
   socket.on("message", (message: any) => {
     io.sockets.emit("message", message);
     console.log("message arrived : ", message);
+  });
+
+  socket.on("CreateMap", (message: any) => {
+    io.sockets.emit("CreateMap", message);
+    console.log("CreateMap : ", message);
+  });
+
+  socket.on("OnPlay", (message: any) => {
+    io.sockets.emit("OnPlay", message);
+    console.log("OnPlay : ", message);
+  });
+  socket.on("GameOver", (message: any) => {
+    io.sockets.emit("GameOver", message);
+    console.log("GameOver : ", message);
+  });
+  socket.on("Init", (message: any) => {
+    io.sockets.emit("Init", message);
+    console.log("Init : ", message);
   });
 });
 
