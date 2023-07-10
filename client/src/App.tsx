@@ -6,8 +6,7 @@ import { Pagination, Navigation, Mousewheel, Keyboard } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-
-import "./App.css";
+import { Main } from "./components";
 
 const swiperStyle = (slideIndex: number) => css`
   .swiper {
@@ -53,7 +52,7 @@ const swiperStyle = (slideIndex: number) => css`
   }
 `;
 
-function App() {
+const App = () => {
   const URL = `http://localhost:8000`;
   const socket = connect(URL);
 
@@ -82,6 +81,14 @@ function App() {
     // TODO: https://socket.io/docs/v4/emitting-events/
   };
 
+  //   Slide 1
+  // <div>
+  //   <p>Connected: {"" + isConnected}</p>
+  //   <p>Last message: {lastMessage || "-"}</p>
+  //   <button onClick={sendMessage}>send message</button>
+  //   <p>한글 폰트 적용</p>
+  // </div>
+
   //must be in Swiper context :
   // const swiper = useSwiper();
   // const swiperSlide = useSwiperSlide();
@@ -105,14 +112,7 @@ function App() {
         }}
       >
         <SwiperSlide>
-          Slide 1
-          <div>
-            <p>Connected: {"" + isConnected}</p>
-            <p>Last message: {lastMessage || "-"}</p>
-            <button onClick={sendMessage}>send message</button>
-            <p>한글 폰트 적용</p>
-          </div>
-          ;
+          <Main />
         </SwiperSlide>
 
         <SwiperSlide>Slide 2</SwiperSlide>
@@ -122,6 +122,6 @@ function App() {
       </Swiper>
     </div>
   );
-}
+};
 
 export default App;
