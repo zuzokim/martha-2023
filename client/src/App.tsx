@@ -6,7 +6,9 @@ import { Pagination, Navigation, Mousewheel, Keyboard } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-import { Main } from "./components";
+import { Main, Intro, JobSelect } from "./components";
+import SwiperSlides from "./components/SwiperSlides";
+import { NavigationType } from "./components/Main";
 
 const swiperStyle = (slideIndex: number) => css`
   .swiper {
@@ -54,7 +56,7 @@ const swiperStyle = (slideIndex: number) => css`
 
 const App = () => {
   const URL = `http://localhost:8000`;
-  const socket = connect(URL);
+  const socket = connect(URL, { autoConnect: false });
 
   const [isConnected, setIsConnected] = useState(socket.connected);
   const [lastMessage, setLastMessage] = useState(null);
@@ -89,21 +91,18 @@ const App = () => {
   //   <p>한글 폰트 적용</p>
   // </div>
 
-  //must be in Swiper context :
-  // const swiper = useSwiper();
-  // const swiperSlide = useSwiperSlide();
-  const [slideIndex, setSlideIndex] = useState(0);
+  const [slideIndex, setSlideIndex] = useState(1);
+  const [slideType, setSlideType] = useState<NavigationType>("PLAY");
 
   return (
     <div css={swiperStyle(slideIndex)}>
       <Swiper
+        effect="fade"
         modules={[Navigation, Pagination, Mousewheel, Keyboard]}
         navigation={true}
-        mousewheel={true}
         keyboard={true}
         speed={1000}
         className="mySwiper"
-        autoplay={true}
         onSlideChange={(swiper) => {
           setSlideIndex(swiper.activeIndex);
         }}
@@ -111,14 +110,36 @@ const App = () => {
           console.log(swiper);
         }}
       >
+        {/* 0 */}
         <SwiperSlide>
-          <Main />
+          <Main
+            onClick={(navigationType) => {
+              setSlideType(navigationType);
+              setSlideIndex((prev) => prev + 1);
+            }}
+          />
         </SwiperSlide>
-
-        <SwiperSlide>Slide 2</SwiperSlide>
-        <SwiperSlide>Slide 3</SwiperSlide>
-        <SwiperSlide>Slide 4</SwiperSlide>
-        <SwiperSlide>Slide 5</SwiperSlide>
+        {/* TODO: could be just one component with different nav type */}
+        {/* 1 */}
+        {slideType === "PLAY" && (
+          <SwiperSlide>
+            <div>play</div>
+          </SwiperSlide>
+        )}
+        {/* 1 */}
+        {slideType === "INTRO" && (
+          <SwiperSlide>
+            <Intro />
+          </SwiperSlide>
+        )}
+        {/* 2 */}
+        <SwiperSlide>
+          <JobSelect
+            onSelect={(navigationType) => {
+              setSlideIndex((prev) => prev + 1);
+            }}
+          />
+        </SwiperSlide>
       </Swiper>
     </div>
   );
