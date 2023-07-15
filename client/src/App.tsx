@@ -22,8 +22,8 @@ const slidesContainerStyle = css`
   position: relative;
   border: 1px solid blue;
   .slide-routes {
+    /* need to be set to 100% for 'fullpage' slides */
     width: 100%;
-    height: fit-content;
   }
 `;
 
