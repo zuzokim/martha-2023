@@ -16,10 +16,12 @@
     "react-dom": "^18.2.0",
     "react-router": "^6.14.1",
     "react-router-dom": "^6.14.1",
+    "react-slide-routes": "^3.0.3",
     "socket.io": "^4.6.1",
     "socket.io-client": "^4.6.1",
     "swiper": "^10.0.4",
-    "vite-plugin-svgr": "^3.2.0"
+    "vite-plugin-svgr": "^3.2.0",
+    "zustand": "^4.3.9"
   },
   "devDependencies": {
     "@types/react": "^18.0.28",
