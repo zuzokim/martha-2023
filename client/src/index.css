@@ -27,6 +27,19 @@
   --martha-primary-bg-color: #e6f8ff;
   --martha-secondary-bg-color: #ff0604;
   background-color: var(--martha-primary-bg-color);
+
+  /**iOS 11.2version above*/
+  @supports (bottom: env(safe-area-inset-bottom)) {
+    :root {
+      --safe-area-inset-bottom: env(safe-area-inset-bottom);
+    }
+  }
+  /**iOS 11.0version */
+  @supports (bottom: constant(safe-area-inset-bottom)) {
+    :root {
+      --safe-area-inset-bottom: constant(safe-area-inset-bottom);
+    }
+  }
 }
 
 body {
