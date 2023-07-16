@@ -1,5 +1,5 @@
 import SvgComponent from "./SvgComponent";
-import LogoSvg from "../../public/assets/svgs/logo_martha.svg";
+import LogoPng from "../../public/assets/svgs/logo_vertical.png";
 import { css } from "@emotion/react";
 
 export interface LogoProps {}
@@ -7,8 +7,8 @@ const Logo = (props: LogoProps) => {
   const { ...others } = props;
   return (
     <SvgComponent
-      src={LogoSvg}
-      alt="martha_logo"
+      src={LogoPng}
+      alt="vertical_martha_logo"
       css={css`
         /* width: 23vw; //99px */
         /* height: 100%; */

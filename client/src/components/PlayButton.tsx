@@ -1,5 +1,6 @@
 import SvgComponent from "./SvgComponent";
-import PlayButtonSvg from "../../public/assets/svgs/play_button.svg";
+import PlayButtonPng from "../../public/assets/svgs/play_button.png";
+import { css } from "@emotion/react";
 
 export interface PlayButtonProps {
   onClick?: () => void;
@@ -10,8 +11,12 @@ const PlayButton = (props: PlayButtonProps) => {
     <SvgComponent
       role="button"
       aria-label="playButton"
-      src={PlayButtonSvg}
+      src={PlayButtonPng}
       alt="playButton"
+      css={css`
+        width: 50%;
+        transform: translateX(50%);
+      `}
       onClick={onClick}
       {...others}
     />

@@ -8,7 +8,10 @@ const navigationContainerStyle = (path: string) => css`
   display: flex;
   gap: 24px;
   position: absolute;
-  bottom: 96px;
+  bottom: 20px;
+  @media (min-width: 420px) {
+    height: 96px;
+  }
   left: 50%;
   transform: translateX(-50%);
   ${path === "/" &&
