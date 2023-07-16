@@ -12,7 +12,8 @@
 }
 
 :root {
-  font-family: "Arita-dotum-Medium", "KoPubWorld", Arial, Helvetica, sans-serif;
+  font-family: "KoPubWorld";
+  /* "Arita-dotum-Medium", Arial, Helvetica, sans-serif; */
   line-height: 1.7;
   letter-spacing: 0.125;
   font-weight: 400;
@@ -26,6 +27,7 @@
   --martha-font-kobpubworld: "KoPubWorld";
   --martha-primary-bg-color: #e6f8ff;
   --martha-secondary-bg-color: #ff0604;
+  --martha-secondary-color: #ff0604;
   background-color: var(--martha-primary-bg-color);
 
   /**iOS 11.2version above*/
@@ -46,4 +48,5 @@ body {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  overflow: hidden;
 }

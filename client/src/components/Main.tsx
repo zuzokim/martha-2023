@@ -5,13 +5,12 @@ import AboutButton from "./AboutButton";
 import { NavLink } from "react-router-dom";
 
 const mainContainerStyle = () => css`
-  gap: 43px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border: 1px solid tomato;
   height: 100svh;
+  gap: 43px;
 `;
 
 export interface MainProps {}

@@ -20,7 +20,7 @@ const slidesContainerStyle = css`
   place-items: center;
   height: 100svh;
   position: relative;
-  border: 1px solid blue;
+  /* border: 1px solid blue; */
   .slide-routes {
     /* need to be set to 100% for 'fullpage' slides */
     width: 100%;
