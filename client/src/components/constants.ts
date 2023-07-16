@@ -71,3 +71,32 @@ export const jobList: { name: string; type: JobType }[] = [
   { name: "이모지 번역16", type: "COSMIC" },
   { name: "이모지 번역17", type: "COSMIC" },
 ];
+
+export type NavigationType =
+  | "main"
+  | "about"
+  | "playintro"
+  | "jobselect"
+  | "createmap"
+  | "playing"
+  | "result";
+
+export const PREV_NAV_PATH: { [key in NavigationType]: string | null } = {
+  main: null,
+  about: "/",
+  playintro: "/",
+  jobselect: "/playintro",
+  createmap: "/jobselect",
+  playing: "/createmap",
+  result: "/playing",
+};
+
+export const NEXT_NAV_PATH: { [key in NavigationType]: string | null } = {
+  main: "/playintro",
+  about: null,
+  playintro: "/jobselect",
+  jobselect: "/createmap",
+  createmap: "/playing",
+  playing: "/result",
+  result: null,
+};
