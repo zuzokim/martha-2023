@@ -1,6 +1,7 @@
 import { css } from "@emotion/react";
 
-import gif from "../../public/assets/svgs/Gameover.gif";
+// import gif from "../../public/assets/svgs/Gameover.gif";
+import textFrame from "../../public/assets/svgs/text_frame.png";
 import { PREV_NAV_PATH, introText } from "./constants";
 import { usePathStore } from "./store";
 import { useLocation } from "react-router-dom";
@@ -28,13 +29,8 @@ const textContainerStyle = css`
   padding: 20px 30px;
   overflow-y: scroll;
   border-radius: 12px;
-  background: rgb(255, 0, 0);
-  background: linear-gradient(
-    90deg,
-    rgba(255, 0, 0, 0.20354079131652658) 0%,
-    rgba(251, 251, 251, 1) 50%,
-    rgba(255, 0, 0, 0.20073967086834732) 100%
-  );
+  background-size: 100%;
+  background-image: url("../../public/assets/svgs/text_frame.png");
 
   ::-webkit-scrollbar-track {
     background-color: transparent;

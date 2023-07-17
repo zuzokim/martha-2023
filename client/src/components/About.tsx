@@ -25,13 +25,15 @@ const textContainerStyle = () => css`
   padding: 20px 30px;
   overflow-y: scroll;
   border-radius: 12px;
-  background: rgb(255, 0, 0);
+  background-size: 100%;
+  background-image: url("../../public/assets/svgs/text_frame.png");
+  /* background: rgb(255, 0, 0);
   background: linear-gradient(
     90deg,
     rgba(255, 0, 0, 0.20354079131652658) 0%,
     rgba(251, 251, 251, 1) 50%,
     rgba(255, 0, 0, 0.20073967086834732) 100%
-  );
+  ); */
 
   ::-webkit-scrollbar-track {
     background-color: transparent;
