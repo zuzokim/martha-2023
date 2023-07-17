@@ -15,6 +15,7 @@ const AboutButton = (props: AboutButtonProps) => {
       css={css`
         width: 50%;
         transform: translateX(50%);
+        display: block;
       `}
       alt="introButton"
       onClick={onClick}
