@@ -1,13 +1,25 @@
 import SvgComponent from "./SvgComponent";
-import NextSvg from "../../public/assets/svgs/next_button.svg";
+import ArrowRight from "../../public/assets/svgs/arrow_right.png";
 import { css } from "@emotion/react";
 
 export interface NextNavigationProps {
-
+  onClick?: () => void;
 }
 const NextNavigation = (props: NextNavigationProps) => {
-  const { ...others } = props;
-  return <SvgComponent src={NextSvg} alt="next" css={css``} {...others} />;
+  const { onClick, ...others } = props;
+  return (
+    <SvgComponent
+      src={ArrowRight}
+      alt="next"
+      css={css`
+        height: 24px;
+      `}
+      onClick={() => {
+        onClick?.();
+      }}
+      {...others}
+    />
+  );
 };
 
 export default NextNavigation;
