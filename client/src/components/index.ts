@@ -2,6 +2,8 @@ export { default as Main } from "./Main";
 export { default as About } from "./About";
 export { default as PlayIntro } from "./PlayIntro";
 export { default as JobSelect } from "./JobSelect";
+export { default as CreateMap } from "./CreateMap";
+
 export { default as AboutButton } from "./AboutButton";
 export { default as PlayButton } from "./PlayButton";
 export { default as PrevNavigation } from "./PrevNavigation";
