@@ -1,10 +1,12 @@
 from flask import Flask, jsonify, redirect, render_template, request, url_for
 from models import db, Job, Image
+from flask_cors import CORS
 
 import os
 import openai
 
 app = Flask(__name__)
+CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True, methods=["GET", "POST"])
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///job.db'
 db.init_app(app)
 
@@ -52,7 +54,56 @@ def get_job(job_id):
         return jsonify(job_data)
     else:
         return jsonify({'error': 'Job not found.'}), 404
+    
+
+# ChatGPT
+@app.route('/result', methods=['GET', 'POST'])
+def gpt():
+    if request.method == "POST":
+        selectedJob = request.form["selectJob"]
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "system", "content": "You are a helpful assistant."},
+                {"role": "user", "content": generate_prompt(selectedJob)}
+            ],
+        )
+        result = response['choices'][0]['message']['content']
+        generatedText = result.replace('\n', '<br>')
+
+        # job_id = selectedJob.get("id")
+        # job_name = selectedJob.get("name")
+
+        # response_data = {
+        #     "generatedText": generatedText,
+        #     "selected_job":{
+        #         "jobId": job_id,
+        #         "jobName": job_name                
+        #     }
+        # }
+
+        # return jsonify(response_data)
+        return jsonify(result=generatedText)
+
+def generate_prompt(selectedJob):
+    prompt = """A. {0}의 성향과 꿈에 관한 3문단의 하이쿠를 적어 주세요.
+
+# [조건]
+
+# - 음절에 관한 문구는 제거.
+# - 신비로운 말투로 작성.
+# - 제목 제거.
+
+# B. {0}입사할 수 있을만한 부서를 추천하고 예상 연봉을 달러로 적어 주세요.
+
+# [조건]
+
+# - 에세이 스타일로 작성.
+# - 귀여운 말투로 작성.
+# - 제목 제거.""".format(selectedJob.capitalize(), selectedJob.capitalize())
+    return prompt
+
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='localhost', port=5000, debug=True)
