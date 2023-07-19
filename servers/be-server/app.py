@@ -45,7 +45,7 @@ def get_jobs():
     return jsonify(jobList)
 
 
-# 특정 직업 조회
+# 특정 직업 선택
 @app.route('/job_list/<int:job_id>', methods=['POST'])
 def get_job(job_id):
     job = Job.query.get(job_id)
