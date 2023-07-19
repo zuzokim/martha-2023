@@ -1,11 +1,11 @@
-from flask import Flask, jsonify, redirect, render_template, request, url_for
+from flask import Flask, jsonify, redirect, render_template, request, url_for, send_from_directory
 from models import db, Job, Image
 from flask_cors import CORS
 
 import os
 import openai
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static')
 CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True, methods=["GET", "POST"])
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///job.db'
 db.init_app(app)
@@ -17,6 +17,13 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 @app.route('/')
 def hello():
     return 'Connected!'
+
+
+# static 경로 라우팅
+@app.route('static/<path:path>')
+def serve_static(path):
+    return send_from_directory(app.static_folder, path)
+
 
 # 전체 직업 조회
 @app.route('/job_list', methods=['GET'])
