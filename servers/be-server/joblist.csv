@@ -1,28 +1,28 @@
 ﻿id,name,type,image
-1,과몰입 방지 칼럼니스트,HUMAN,../servers/be-server/static/stop1.png';'../servers/be-server/static/stop2.png';'../servers/be-server/static/stop3.png'
-2,뇌활성화 조립가,HUMAN,../servers/be-server/static/brain1.png';'../servers/be-server/static/brain2.png';'../servers/be-server/static/brain3.png';'../servers/be-server/static/brain4.png';'../servers/be-server/static/brain5.png';'../servers/be-server/static/brain6.png';'../servers/be-server/static/brain7.png';'../servers/be-server/static/brain8.png'
-3,다중우주 지도 기록자,COSMIC,../servers/be-server/static/multi1.png';'../servers/be-server/static/multi2.png';'../servers/be-server/static/multi3.png'
-4,디지털 사후세계 장의사,DIGITAL,../servers/be-server/static/afterlife1.png';'../servers/be-server/static/afterlife2.png';'../servers/be-server/static/afterlife3.png';'../servers/be-server/static/afterlife4.png';'../servers/be-server/static/afterlife5.png';'../servers/be-server/static/afterlife6.png';'../servers/be-server/static/afterlife7.png'
-5,리얼리티 쇼 예측 점성술사,HUMAN,../servers/be-server/static/show1.png';'../servers/be-server/static/show2.png';'../servers/be-server/static/show4.png';'../servers/be-server/static/show5.png'
-6,마이크로 주택 건축가,HUMAN,../servers/be-server/static/micro1.png';'../servers/be-server/static/micro2.png';'../servers/be-server/static/micro3.png';'../servers/be-server/static/micro4.png';'../servers/be-server/static/micro5.png'
-7,메타휴먼 메이크업 아티스트,DIGITAL,../servers/be-server/static/makeup1.png';'../servers/be-server/static/makeup2.png';'../servers/be-server/static/makeup3.png';'../servers/be-server/static/makeup4.png'
-8,미래음악 평론가,DIGITAL,../servers/be-server/static/critic1.png';'../servers/be-server/static/critic2.png';'../servers/be-server/static/critic3.png';'../servers/be-server/static/critic4.png';'../servers/be-server/static/critic5.png';'../servers/be-server/static/critic6.png'
-9,베테랑 베타 테스터,DIGITAL,../servers/be-server/static/test1.png';'../servers/be-server/static/test2.png';'../servers/be-server/static/test3.png';'../servers/be-server/static/test4.png';'../servers/be-server/static/test5.png';'../servers/be-server/static/test6.png';'../servers/be-server/static/test7.png';'../servers/be-server/static/test8.png';'../servers/be-server/static/test9.png';'../servers/be-server/static/test10.png';'../servers/be-server/static/test11.png';'../servers/be-server/static/test12.png'
-10,소셜미디어 디톡스 전문가,HUMAN,../servers/be-server/static/detox1.png';'../servers/be-server/static/detox2.png';'../servers/be-server/static/detox3.png';'../servers/be-server/static/detox4.png'
-11,시공간 균열 설계자,COSMIC,../servers/be-server/static/crack1.png';'../servers/be-server/static/crack2.png';'../servers/be-server/static/crack3.png'
-12,심사숙고 전문가,HUMAN,../servers/be-server/static/worry1.png';'../servers/be-server/static/worry2.png';'../servers/be-server/static/worry3.png';'../servers/be-server/static/worry4.png'
-13,암흑물질 청소부,COSMIC,../servers/be-server/static/dark1.png';'../servers/be-server/static/dark2.png';'../servers/be-server/static/dark3.png';'../servers/be-server/static/dark4.png';'../servers/be-server/static/dark5.png'
-14,우주 엘리베이터 안내원,COSMIC,../servers/be-server/static/elevator1.png';'../servers/be-server/static/elevator2.png';'../servers/be-server/static/elevator3.png';'../servers/be-server/static/elevator4.png';'../servers/be-server/static/elevator5.png';'../servers/be-server/static/elevator6.png';'../servers/be-server/static/elevator7.png';'../servers/be-server/static/elevator8.png';'../servers/be-server/static/elevator9.png'
-15,웹 조향사,DIGITAL,../servers/be-server/static/perfumer1.png';'../servers/be-server/static/perfumer2.png';'../servers/be-server/static/perfumer3.png';'../servers/be-server/static/perfumer4.png'
-16,이모지 번역가,HUMAN,../servers/be-server/emoji1.png';'../servers/be-server/emoji2.png';'../servers/be-server/emoji3.png';'../servers/be-server/emoji4.png';'../servers/be-server/emoji5.png';'../servers/be-server/emoji6.png'
-17,인공 장기 디자이너,DIGITAL,../servers/be-server/organ1.png';'../servers/be-server/organ2.png';'../servers/be-server/organ3.png';'../servers/be-server/organ4.png';'../servers/be-server/organ5.png';'../servers/be-server/organ6.png'
-18,자연생물 근본주의 요리사,HUMAN,../servers/be-server/green1.png';'../servers/be-server/green2.png';'../servers/be-server/green3.png';'../servers/be-server/green4.png';'../servers/be-server/green7.png'
-19,종교전쟁 해결 위원,HUMAN,../servers/be-server/war1.png';'../servers/be-server/war2.png';'../servers/be-server/war3.png';'../servers/be-server/war4.png';'../servers/be-server/war5.png'
-20,중력 시공 컨설턴트,COSMIC,../servers/be-server/gravity1.png';'../servers/be-server/gravity2.png';'../servers/be-server/gravity3.png';'../servers/be-server/gravity4.png';'../servers/be-server/gravity5.png'
-21,추상전략 시뮬레이터 이용자,DIGITAL,../servers/be-server/che1.png';'../servers/be-server/che2.png';'../servers/be-server/che3.png';'../servers/be-server/che4.png';'../servers/be-server/che5.png'
-22,퀀텀 현실 치료사,COSMIC,../servers/be-server/quan1.png';'../servers/be-server/quan2.png';'../servers/be-server/quan3.png'
-23,크립토 생명체 사파리 가이드,DIGITAL,../servers/be-server/safari1.png';'../servers/be-server/safari2.png';'../servers/be-server/safari3.png';'../servers/be-server/safari4.png'
-24,키링 지휘자,HUMAN,../servers/be-server/key1.png';'../servers/be-server/key2.png';'../servers/be-server/key3.png';'../servers/be-server/key4.png';'../servers/be-server/key5.png';'../servers/be-server/key6.png';'../servers/be-server/key7.png'
-25,태양풍 탐험가,COSMIC,../servers/be-server/sun1.png';'../servers/be-server/sun2.png';'../servers/be-server/sun3.png';'../servers/be-server/sun4.png';'../servers/be-server/sun5.png';'../servers/be-server/sun6.png';'../servers/be-server/sun7.png';'../servers/be-server/sun8.png'
-26,팬덤 커뮤니케이터,HUMAN,../servers/be-server/fan1.png';'../servers/be-server/fan2.png';'../servers/be-server/fan3.png'
-27,D41 주사위 공예가,DIGITAL,../servers/be-server/dice01.png';'../servers/be-server/dice02.png';'../servers/be-server/dice03.png'
+1,과몰입 방지 칼럼니스트,HUMAN,stop1.png;stop2.png;stop3.png
+2,뇌활성화 조립가,HUMAN,brain1.png;brain2.png;brain3.png;brain4.png;brain5.png;brain6.png;brain7.png;brain8.png
+3,다중우주 지도 기록자,COSMIC,multi1.png;multi2.png;multi3.png
+4,디지털 사후세계 장의사,DIGITAL,afterlife1.png;afterlife2.png;afterlife3.png;afterlife4.png;afterlife5.png;afterlife6.png;afterlife7.png
+5,리얼리티 쇼 예측 점성술사,HUMAN,show1.png;show2.png;show4.png;show5.png
+6,마이크로 주택 건축가,HUMAN,micro1.png;micro2.png;micro3.png;micro4.png;micro5.png
+7,메타휴먼 메이크업 아티스트,DIGITAL,makeup1.png;makeup2.png;makeup3.png;makeup4.png
+8,미래음악 평론가,DIGITAL,critic1.png;critic2.png;critic3.png;critic4.png;critic5.png;critic6.png
+9,베테랑 베타 테스터,DIGITAL,test1.png;test2.png;test3.png;test4.png;test5.png;test6.png;test7.png;test8.png;test9.png;test10.png;test11.png;test12.png
+10,소셜미디어 디톡스 전문가,HUMAN,detox1.png;detox2.png;detox3.png;detox4.png
+11,시공간 균열 설계자,COSMIC,crack1.png;crack2.png;crack3.png
+12,심사숙고 전문가,HUMAN,worry1.png;worry2.png;worry3.png;worry4.png
+13,암흑물질 청소부,COSMIC,dark1.png;dark2.png;dark3.png;dark4.png;dark5.png
+14,우주 엘리베이터 안내원,COSMIC,elevator1.png;elevator2.png;elevator3.png;elevator4.png;elevator5.png;elevator6.png;elevator7.png;elevator8.png;elevator9.png
+15,웹 조향사,DIGITAL,perfumer1.png;perfumer2.png;perfumer3.png;perfumer4.png
+16,이모지 번역가,HUMAN,emoji1.png;emoji2.png;emoji3.png;emoji4.png;emoji5.png;emoji6.png
+17,인공 장기 디자이너,DIGITAL,organ1.png;organ2.png;organ3.png;organ4.png;organ5.png;organ6.png
+18,자연생물 근본주의 요리사,HUMAN,green1.png;green2.png;green3.png;green4.png;green7.png
+19,종교전쟁 해결 위원,HUMAN,war1.png;war2.png;war3.png;war4.png;war5.png
+20,중력 시공 컨설턴트,COSMIC,gravity1.png;gravity2.png;gravity3.png;gravity4.png;gravity5.png
+21,추상전략 시뮬레이터 이용자,DIGITAL,che1.png;che2.png;che3.png;che4.png;che5.png
+22,퀀텀 현실 치료사,COSMIC,quan1.png;quan2.png;quan3.png
+23,크립토 생명체 사파리 가이드,DIGITAL,safari1.png;safari2.png;safari3.png;safari4.png
+24,키링 지휘자,HUMAN,key1.png;key2.png;key3.png;key4.png;key5.png;key6.png;key7.png
+25,태양풍 탐험가,COSMIC,sun1.png;sun2.png;sun3.png;sun4.png;sun5.png;sun6.png;sun7.png;sun8.png
+26,팬덤 커뮤니케이터,HUMAN,fan1.png;fan2.png;fan3.png
+27,D41 주사위 공예가,DIGITAL,dice01.png;dice02.png;dice03.png
