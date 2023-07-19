@@ -20,7 +20,7 @@ def hello():
 
 
 # static 경로 라우팅
-@app.route('static/<path:path>')
+@app.route('/static/<path:path>')
 def serve_static(path):
     return send_from_directory(app.static_folder, path)
 
