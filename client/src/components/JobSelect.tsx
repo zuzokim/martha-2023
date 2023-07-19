@@ -1,13 +1,10 @@
 import { css } from "@emotion/react";
-import { useSwiper, useSwiperSlide } from "swiper/react";
-import { NavigationType, introText, jobList } from "./constants";
-import { connect } from "socket.io-client";
+import { jobNameList } from "./constants";
 import JobSelectHeader from "./JobSelectHeader";
 import { useLocation } from "react-router-dom";
 import { useJobSelectStore, usePathStore } from "./store";
 import { useEffect, useState } from "react";
 import Picker from "react-mobile-picker";
-import SelectContainerBg from "../../public/assets/svgs/select_container_bg.png";
 
 const containerStyle = () => css`
   display: flex;
@@ -43,7 +40,7 @@ const jobSelectContainerStyle = () => css`
           .picker-item {
             cursor: pointer;
             color: var(--martha-secondary-color);
-            font-size: 14px;
+            font-size: 17px;
           }
           .picker-item-selected {
             color: white !important;
@@ -58,50 +55,21 @@ export interface JobSelectProps {}
 const JobSelect = (props: JobSelectProps) => {
   const {} = props;
 
-  const URL = `http://localhost:8000`;
-  const socket = connect(URL, { autoConnect: false });
-
-  const handleClick = (name, value) => {
-    // console.log(name, value, "onclick");
-    // async ({ jobType, job }: { jobType: string; job: string }) => {
-    //   console.log(jobType, job);
-    //   //TODO: fetch gpt server
-    //   const response = await fetch("http://localhost:5000/job_list");
-    //   const jsonData = await response.json();
-    //   console.log(jsonData, "data");
-    //   //connect and send jobType to socket server :
-    //   socket.emit("CreateMap", `${jobType}`);
-    // };
-  };
-
-  // const handleClick = async ({
-  //   jobType,
-  //   job,
-  // }: {
-  //   jobType: string;
-  //   job: string;
-  // }) => {
-  //   console.log(jobType, job);
-  //   //TODO: fetch gpt server
-  //   const response = await fetch("http://localhost:5000/job_list");
-  //   const jsonData = await response.json();
-  //   console.log(jsonData, "data");
-  //   //connect and send jobType to socket server :
-  //   socket.emit("CreateMap", `${jobType}`);
-  // };
-
   const location = useLocation();
   const { setPath } = usePathStore();
-  const { setSelectedJobInfo, selectedJobInfo } = useJobSelectStore();
+  const { setSelectedJobInfo, selectedJobInfo, setJobList } =
+    useJobSelectStore();
+
+  console.log(selectedJobInfo, "selectedJobInfo");
 
   const [selectedJobDict, setSelectedJobDict] = useState({
-    selectedJob: "크립토 생명체 사파리 가이드",
+    selectedJob: "우주 엘리베이터 안내원",
     /**needed to init select */
-    jobOptions: "크립토 생명체 사파리 가이드",
+    jobOptions: "우주 엘리베이터 안내원",
   });
 
   const jobOptionsDict = {
-    jobOptions: jobList.map((job) => job.jobName),
+    jobOptions: jobNameList,
   };
 
   const handleChange = (name: string, value: string) => {
@@ -124,7 +92,21 @@ const JobSelect = (props: JobSelectProps) => {
 
   useEffect(() => {
     /**needed to init store value */
-    setSelectedJobInfo("크립토 생명체 사파리 가이드");
+    setSelectedJobInfo("우주 엘리베이터 안내원");
+  }, []);
+
+  useEffect(() => {
+    const getJobList = async () => {
+      try {
+        const response = await fetch("http://127.0.0.1:5000/job_list");
+        const jsonData = await response.json();
+        setJobList(jsonData);
+        setSelectedJobInfo(jsonData[13].jobName);
+      } catch (error) {
+        console.log("Error fetching jobList:", error);
+      }
+    };
+    getJobList();
   }, []);
 
   useEffect(() => {
@@ -135,21 +117,11 @@ const JobSelect = (props: JobSelectProps) => {
     <div css={containerStyle}>
       <JobSelectHeader />
       <div css={jobSelectContainerStyle}>
-        {/* <img
-          src={SelectContainerBg}
-          css={css`
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 476px;
-            display: block;
-          `}
-        /> */}
         <Picker
           optionGroups={jobOptionsDict}
           valueGroups={selectedJobDict}
           onChange={handleChange}
-          onClick={handleClick}
+          // onClick={handleClick}
           height={476}
           itemHeight={44}
         />
@@ -159,15 +131,3 @@ const JobSelect = (props: JobSelectProps) => {
 };
 
 export default JobSelect;
-
-// <ol>
-//   {jobList.map((v, index) => (
-//     <li key={index}>
-//       <button
-//         onClick={() => handleClick({ jobType: v.type, job: v.name })}
-//       >
-//         {v.name}
-//       </button>
-//     </li>
-//   ))}
-// </ol>;

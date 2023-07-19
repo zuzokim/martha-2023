@@ -1,5 +1,8 @@
 import { css } from "@emotion/react";
 import createMapGif from "../../public/assets/svgs/create_map.gif";
+import { useJobSelectStore } from "./store";
+import { connect } from "socket.io-client";
+import { useEffect, useState } from "react";
 
 const rootStyle = css`
   height: 100svh;
@@ -134,7 +137,30 @@ const createMapDoneTextStyle = css`
 export interface CreateMapProps {}
 
 const CreateMap = (props: CreateMapProps) => {
-  const mapCreated = true;
+  const { selectedJobInfo } = useJobSelectStore();
+  const [mapCreated, setMapCreated] = useState(false);
+
+  const URL = `http://localhost:8000`;
+  const socket = connect(URL);
+
+  useEffect(() => {
+    //connect and send jobType to socket server :
+    socket.emit("CreateMap", `${selectedJobInfo.jobType}`);
+    socket.on("connect", () => {
+      // setIsConnected(true);
+    });
+    socket.on("disconnect", () => {
+      // setIsConnected(false);
+    });
+    socket.on("CreateMap", (data) => {
+      setMapCreated(data === "Created");
+    });
+    return () => {
+      socket.off("connect");
+      socket.off("disconnect");
+      socket.off("CreateMap");
+    };
+  }, [socket]);
   return (
     <div css={rootStyle}>
       <div css={gifContainerStyle}>

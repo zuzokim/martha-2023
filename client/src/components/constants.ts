@@ -47,29 +47,41 @@ export const aboutText = `마리아 불러 어머님,
 
 export type JobType = "COSMIC" | "HUMAN" | "FUTURE";
 
-export const jobList: { jobId: number; jobName: string; jobType: JobType }[] = [
-  { jobId: 0, jobName: "이모지 번역가0", jobType: "COSMIC" },
-  { jobId: 1, jobName: "이모지 번역가1", jobType: "COSMIC" },
-  { jobId: 2, jobName: "이모지 번역가2", jobType: "COSMIC" },
-  { jobId: 3, jobName: "이모지 번역가3", jobType: "COSMIC" },
-  { jobId: 4, jobName: "이모지 번역4", jobType: "COSMIC" },
-  { jobId: 5, jobName: "이모지 번역5", jobType: "COSMIC" },
-  { jobId: 6, jobName: "이모지 번역가", jobType: "COSMIC" },
-  { jobId: 7, jobName: "중력 시공 컨설턴트", jobType: "HUMAN" },
-  { jobId: 8, jobName: "크립토 생명체 사파리 가이드", jobType: "COSMIC" },
-  { jobId: 9, jobName: "암흑물질 청소부", jobType: "FUTURE" },
-  { jobId: 10, jobName: "이모지 번역6", jobType: "COSMIC" },
-  { jobId: 11, jobName: "이모지 번역7", jobType: "COSMIC" },
-  { jobId: 12, jobName: "이모지 번역8", jobType: "COSMIC" },
-  { jobId: 13, jobName: "이모지 번역9", jobType: "COSMIC" },
-  { jobId: 14, jobName: "이모지 번역10", jobType: "COSMIC" },
-  { jobId: 15, jobName: "이모지 번역11", jobType: "COSMIC" },
-  { jobId: 16, jobName: "이모지 번역12", jobType: "COSMIC" },
-  { jobId: 17, jobName: "이모지 번역13", jobType: "COSMIC" },
-  { jobId: 18, jobName: "이모지 번역14", jobType: "COSMIC" },
-  { jobId: 19, jobName: "이모지 번역15", jobType: "COSMIC" },
-  { jobId: 20, jobName: "이모지 번역16", jobType: "COSMIC" },
-  { jobId: 21, jobName: "이모지 번역17", jobType: "COSMIC" },
+export type JobInfo = {
+  jobId: number;
+  jobName: string;
+  jobType: JobType;
+  generatedImageNames?: string[];
+};
+
+export const jobNameList = [
+  "과몰입 방지 칼럼니스트",
+  "뇌활성화 조립가",
+  "다중우주 지도 기록자",
+  "디지털 사후세계 장의사",
+  "리얼리티 쇼 예측 점성술사",
+  "마이크로 주택 건축가",
+  "메타휴먼 메이크업 아티스트",
+  "미래음악 평론가",
+  "베테랑 베타 테스터",
+  "소셜미디어 디톡스 전문가",
+  "시공간 균열 설계자",
+  "심사숙고 전문가",
+  "암흑물질 청소부",
+  "우주 엘리베이터 안내원",
+  "웹 조향사",
+  "이모지 번역가",
+  "인공 장기 디자이너",
+  "자연생물 근본주의 요리사",
+  "종교전쟁 해결 위원",
+  "중력 시공 컨설턴트",
+  "추상전략 시뮬레이터 이용자",
+  "퀀텀 현실 치료사",
+  "크립토 생명체 사파리 가이드",
+  "키링 지휘자",
+  "태양풍 탐험가",
+  "팬덤 커뮤니케이터",
+  "주사위 공예가",
 ];
 
 export type NavigationType =

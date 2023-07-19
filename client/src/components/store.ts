@@ -3,8 +3,7 @@ import {
   PREV_NAV_PATH,
   NEXT_NAV_PATH,
   NavigationType,
-  jobList,
-  JobType,
+  JobInfo,
 } from "./constants";
 
 export interface PathStoreState {
@@ -32,26 +31,35 @@ export const usePathStore = create<PathStoreState>((set) => ({
     // console.log(pathname, "store pathname"); // Output: "pathname"
     set({
       prevPath: PREV_NAV_PATH[pathKey as NavigationType],
+      path: pathname,
       nextPath: NEXT_NAV_PATH[pathKey as NavigationType],
     });
   },
 }));
 
-export type JobInfo = { jobId: number; jobName: string; jobType: JobType };
-
 export interface JobSelectStoreState {
   selectedJobInfo: JobInfo;
   setSelectedJobInfo: (jobName: string) => void;
+  jobList: JobInfo[];
+  setJobList: (jobList: JobInfo[]) => void;
 }
 
 export const useJobSelectStore = create<JobSelectStoreState>((set) => ({
-  selectedJobInfo: {} as unknown as JobInfo,
+  selectedJobInfo: {
+    jobId: 14,
+    jobName: "우주 엘리베이터 안내원",
+    jobType: "COSMIC",
+  },
   setSelectedJobInfo: (jobName) => {
-    // console.log(jobName);
-    //TODO: set the jobList with queried jobList from server.
-    const selectedJobInfo = jobList?.find((job) => job.jobName === jobName);
-    set({
-      selectedJobInfo,
-    });
+    set(({ jobList }) => ({
+      //set the jobList with queried jobList from server.
+      selectedJobInfo: jobList?.find(
+        (job) => job.jobName === (jobName ?? "우주 엘리베이터 안내원")
+      ),
+    }));
+  },
+  jobList: [],
+  setJobList: (jobList) => {
+    set({ jobList });
   },
 }));
