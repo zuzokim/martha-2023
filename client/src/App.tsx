@@ -6,6 +6,7 @@ import {
   PlayIntro,
   NavigationButtons,
   CreateMap,
+  Playing,
 } from "./components";
 import { BrowserRouter, Route } from "react-router-dom";
 import SlideRoutes from "react-slide-routes";
@@ -32,6 +33,7 @@ const App = () => {
           <Route path="/playintro" element={<PlayIntro />}></Route>
           <Route path="/jobselect" element={<JobSelect />}></Route>
           <Route path="/createmap" element={<CreateMap />}></Route>
+          <Route path="/playing" element={<Playing />}></Route>
         </SlideRoutes>
         <NavigationButtons />
       </div>

@@ -15,7 +15,7 @@ const navigationContainerStyle = (path: string) => css`
   }
   left: 50%;
   transform: translateX(-50%);
-  ${(path === "/" || path === "/createmap") &&
+  ${(path === "/" || path === "/createmap" || path === "/playing") &&
   css`
     display: none;
   `}

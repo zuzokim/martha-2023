@@ -3,6 +3,7 @@ export { default as About } from "./About";
 export { default as PlayIntro } from "./PlayIntro";
 export { default as JobSelect } from "./JobSelect";
 export { default as CreateMap } from "./CreateMap";
+export { default as Playing } from "./Playing";
 
 export { default as AboutButton } from "./AboutButton";
 export { default as PlayButton } from "./PlayButton";
