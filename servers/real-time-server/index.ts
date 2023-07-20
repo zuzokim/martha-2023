@@ -32,15 +32,20 @@ io.on("connect", (socket: any) => {
     console.log(`🙈socket disconnected. reason: '${reason}'`);
   });
 
-  socket.on("message", (message: any) => {
-    io.sockets.emit("message", message);
-    console.log("message arrived : ", message);
-  });
+  // socket.on("message", (message: any) => {
+  //   io.sockets.emit("message", message);
+  //   console.log("message arrived : ", message);
+  // });
 
-  socket.on("CreateMap", (message: any) => {
-    io.sockets.emit("CreateMap", message);
-    console.log("CreateMap : ", message);
-  });
+  socket.on(
+    "CreateMap",
+    (
+      message: any //jobType(COSMIC | DIGITAL | HUMAN) | Loading | Created | Error
+    ) => {
+      io.sockets.emit("CreateMap", message);
+      console.log("CreateMap : ", message);
+    }
+  );
 
   socket.on("OnPlay", (message: any) => {
     io.sockets.emit("OnPlay", message);

@@ -138,6 +138,7 @@ export interface CreateMapProps {}
 
 const CreateMap = (props: CreateMapProps) => {
   const { selectedJobInfo } = useJobSelectStore();
+  const [isConnected, setIsConnected] = useState(false);
   const [mapCreated, setMapCreated] = useState(false);
 
   const URL = `http://localhost:8000`;
@@ -147,13 +148,19 @@ const CreateMap = (props: CreateMapProps) => {
     //connect and send jobType to socket server :
     socket.emit("CreateMap", `${selectedJobInfo.jobType}`);
     socket.on("connect", () => {
-      // setIsConnected(true);
+      setIsConnected(true);
     });
     socket.on("disconnect", () => {
-      // setIsConnected(false);
+      setIsConnected(false);
+      socket.emit("Init", "Init");
     });
     socket.on("CreateMap", (data) => {
       setMapCreated(data === "Created");
+      if (data === "Error") {
+        //TODO: disconnected : init / reload 처리
+        socket.emit("Init", "Init");
+      }
+    });
     });
     return () => {
       socket.off("connect");
@@ -161,6 +168,11 @@ const CreateMap = (props: CreateMapProps) => {
       socket.off("CreateMap");
     };
   }, [socket]);
+  useEffect(() => {
+    if (!isConnected) {
+      //TODO: disconnected : init / reload 처리
+    }
+  }, [isConnected]);
   return (
     <div css={rootStyle}>
       <div css={gifContainerStyle}>
