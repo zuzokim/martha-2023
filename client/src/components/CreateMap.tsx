@@ -141,7 +141,7 @@ const CreateMap = (props: CreateMapProps) => {
   const { selectedJobInfo } = useJobSelectStore();
   const [isConnected, setIsConnected] = useState(false);
   const [mapCreated, setMapCreated] = useState(false);
-  const [readyToPlay, setMapReadyToPlay] = useState(true);
+  const [readyToPlay, setMapReadyToPlay] = useState(false);
 
   const URL = `http://localhost:8000`;
   const socket = connect(URL);
