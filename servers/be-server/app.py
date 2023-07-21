@@ -32,83 +32,88 @@ def get_jobs():
 
     jobList = []
     for job in jobs:
-        images = Image.query.filter_by(job_id=job.id).all()
-        images_list = [image.path for image in images]
         job_data = {
             'jobId': job.id,
             'jobName': job.name,
-            'jobType': job.type,
-            'images': images_list
+            'jobType': job.type
         }
         jobList.append(job_data)
+
+    response_data = {
+        'jobList': jobList
+    }
     
-    return jsonify(jobList)
+    return jsonify(response_data)
 
 
 # 특정 직업 선택
-@app.route('/job_list:<int:job_id>', methods=['POST'])
+@app.route('/job_list/<int:job_id>', methods=['GET'])
 def get_job(job_id):
     job = Job.query.get(job_id)
-    if job:
-        images = Image.query.filter_by(job_id=job.id).all()
-        images_list = [image.path for image in images]
-        job_data = {
-            'jobId': job.id,
-            'jobName': job.name,
-            'jobType': job.type,
-            'images': images_list
-        }
-        return jsonify(job_data)
-    else:
-        return jsonify({'error': 'Job not found.'}), 404
+
+    if job is None:
+        return jsonify({'message': 'Job not found.'}), 404
+    
+    selectedJob = {
+        'jobId': job.id,
+        'jobName': job.name,
+        'jobType': job.type,
+    }
+
+    response_data = {
+        'selectedJob': selectedJob
+    }
+
+    return jsonify(response_data)
+
     
 
-# ChatGPT
-@app.route('/result', methods=['GET', 'POST'])
-def gpt():
-    if request.method == "POST":
-        selectedJob = request.form["selectJob"]
-        response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
-            messages=[
-                {"role": "system", "content": "You are a helpful assistant."},
-                {"role": "user", "content": generate_prompt(selectedJob)}
-            ],
-        )
-        result = response['choices'][0]['message']['content']
-        generatedText = result.replace('\n', '<br>')
+# # ChatGPT - result
+# @app.route('/result', methods=['GET'])
+# def gpt():
+#     if request.method == "POST":
+#         selectedJob = request.form["selectJob"]
+#         response = openai.ChatCompletion.create(
+#             model="gpt-3.5-turbo",
+#             messages=[
+#                 {"role": "system", "content": "You are a helpful assistant."},
+#                 {"role": "user", "content": generate_prompt(selectedJob)}
+#             ],
+#         )
+#         result = response['choices'][0]['message']['content']
+#         generatedText = result.replace('\n', '<br>')
 
-        # job_id = selectedJob.get("id")
-        # job_name = selectedJob.get("name")
+#         # job_id = selectedJob.get("id")
+#         # job_name = selectedJob.get("name")
 
-        # response_data = {
-        #     "generatedText": generatedText,
-        #     "selected_job":{
-        #         "jobId": job_id,
-        #         "jobName": job_name                
-        #     }
-        # }
+#         # response_data = {
+#         #     "generatedText": generatedText,
+#         #     "selected_job":{
+#         #         "jobId": job_id,
+#         #         "jobName": job_name                
+#         #     }
+#         # }
 
-        # return jsonify(response_data)
-        return jsonify(result=generatedText)
+#         # return jsonify(response_data)
+#         return jsonify(result=generatedText)
 
-def generate_prompt(selectedJob):
-    prompt = """A. {0}의 성향과 꿈에 관한 3문단의 하이쿠를 적어 주세요.
+# def generate_prompt(selectedJob):
+#     prompt = """A. {0}의 성향과 꿈에 관한 3문단의 하이쿠를 적어 주세요.
 
-# [조건]
+# # [조건]
 
-# - 음절에 관한 문구는 제거.
-# - 신비로운 말투로 작성.
-# - 제목 제거.
+# # - 음절에 관한 문구는 제거.
+# # - 신비로운 말투로 작성.
+# # - 제목 제거.
 
-# B. {0}입사할 수 있을만한 부서를 추천하고 예상 연봉을 달러로 적어 주세요.
+# # B. {0}입사할 수 있을만한 부서를 추천하고 예상 연봉을 달러로 적어 주세요.
 
-# [조건]
+# # [조건]
 
-# - 에세이 스타일로 작성.
-# - 귀여운 말투로 작성.
-# - 제목 제거.""".format(selectedJob.capitalize(), selectedJob.capitalize())
-    return prompt
+# # - 에세이 스타일로 작성.
+# # - 귀여운 말투로 작성.
+# # - 제목 제거.""".format(selectedJob.capitalize(), selectedJob.capitalize())
+#     return prompt
 
 
 

@@ -11,7 +11,7 @@
 
     ```
     python3 -m venv venv
-    source venv/bin/activate
+    (mac OS) source venv/bin/activate | (Windows) . venv/bin/activate
     pip install -r requirements.txt
     python models.py # db set. /instance/db
     flask --debug run
