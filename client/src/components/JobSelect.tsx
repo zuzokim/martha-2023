@@ -60,8 +60,6 @@ const JobSelect = (props: JobSelectProps) => {
   const { setSelectedJobInfo, selectedJobInfo, setJobList } =
     useJobSelectStore();
 
-  console.log(selectedJobInfo, "selectedJobInfo");
-
   const [selectedJobDict, setSelectedJobDict] = useState({
     selectedJob: "우주 엘리베이터 안내원",
     /**needed to init select */

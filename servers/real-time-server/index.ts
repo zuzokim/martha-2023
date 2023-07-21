@@ -32,28 +32,48 @@ io.on("connect", (socket: any) => {
     console.log(`🙈socket disconnected. reason: '${reason}'`);
   });
 
-  socket.on("message", (message: any) => {
-    io.sockets.emit("message", message);
-    console.log("message arrived : ", message);
-  });
+  // socket.on("message", (message: any) => {
+  //   io.sockets.emit("message", message);
+  //   console.log("message arrived : ", message);
+  // });
 
-  socket.on("CreateMap", (message: any) => {
-    io.sockets.emit("CreateMap", message);
-    console.log("CreateMap : ", message);
-  });
+  socket.on(
+    "CreateMap",
+    (
+      message: any //jobType(COSMIC | DIGITAL | HUMAN) | Loading | Created | Error
+    ) => {
+      io.sockets.emit("CreateMap", message);
+      console.log("CreateMap : ", message);
+    }
+  );
 
-  socket.on("OnPlay", (message: any) => {
-    io.sockets.emit("OnPlay", message);
-    console.log("OnPlay : ", message);
-  });
-  socket.on("GameOver", (message: any) => {
-    io.sockets.emit("GameOver", message);
-    console.log("GameOver : ", message);
-  });
-  socket.on("Init", (message: any) => {
-    io.sockets.emit("Init", message);
-    console.log("Init : ", message);
-  });
+  socket.on(
+    "OnPlay",
+    (
+      message: any //Playing | Finished | Error
+    ) => {
+      io.sockets.emit("OnPlay", message);
+      console.log("OnPlay : ", message);
+    }
+  );
+  socket.on(
+    "GameOver",
+    (
+      message: any //Normal | Hidden
+    ) => {
+      io.sockets.emit("GameOver", message);
+      console.log("GameOver : ", message);
+    }
+  );
+  socket.on(
+    "Init",
+    (
+      message: any // Init | Inited | Error
+    ) => {
+      io.sockets.emit("Init", message);
+      console.log("Init : ", message);
+    }
+  );
 });
 
 app.get("/", (req: Request, res: Response) => {

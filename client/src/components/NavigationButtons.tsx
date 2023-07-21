@@ -15,7 +15,7 @@ const navigationContainerStyle = (path: string) => css`
   }
   left: 50%;
   transform: translateX(-50%);
-  ${(path === "/" || path === "/createmap") &&
+  ${(path === "/" || path === "/createmap" || path === "/playing") &&
   css`
     display: none;
   `}
@@ -29,8 +29,13 @@ const NavigationButtons = (props: NavigationButtonsProps) => {
 
   const location = useLocation();
 
+  const URL = `http://localhost:8000`;
+  const socket = connect(URL);
+
   const handleClick = async () => {
     if (path === "/jobselect") {
+      socket.emit("CreateMap", `${selectedJobInfo.jobType}`);
+
       try {
         const selectedJob = {
           jobId: selectedJobInfo.jobId,
