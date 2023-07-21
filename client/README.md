@@ -8,7 +8,7 @@
   npm install
   ```
 
-- to run the app (default port is: `5173`)
+- to run the app (default port is: `3000`)
 
   ```
   npm run dev
