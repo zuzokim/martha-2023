@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, redirect, render_template, request, url_for, send_from_directory
-from models import db, Job, Image
+from models import db, Job, Image, User, LoadingMessage
 from flask_cors import CORS
+from datetime import datetime
 
 import os
 import random
@@ -8,7 +9,7 @@ import openai
 
 app = Flask(__name__, static_folder='static')
 CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True, methods=["GET", "POST"])
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///job.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///martha.db'
 db.init_app(app)
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
@@ -66,6 +67,42 @@ def get_job(job_id):
     }
 
     return jsonify(response_data)
+
+
+# user id 생성, plqy start-end time 저장.
+@app.route('/play', methods=['POST'])
+def play():
+
+    user_id = request.json.get('userId')
+    play_start_time = request.json.get('startTime')
+    play_end_time = request.json.get('endTime')
+
+    # # 클라이언트와 시간 문자열 맞춰야 함!
+    # play_start_time = datetime.strptime(play_start_time, '%Y-%m-%d %H:%M:%S')
+    # play_end_time = datetime.strptime(play_end_time, '%Y-%m-%d %H:%M:%S')
+
+    user = None
+
+    if user_id:
+        user = User.query.get(user_id)
+
+    if user is None:
+        user = User()
+        db.session.add(user)
+        db.session.flush()
+        user_id = user.id
+
+    # play_start_time 파라미터가 있으면 시작 시간을 기록
+    if play_start_time:
+        user.play_start_time = datetime.strptime(play_start_time, '%Y-%m-%d %H:%M:%S')
+
+    # play_end_time 파라미터가 있으면 종료 시간을 기록
+    if play_end_time:
+        user.play_end_time = datetime.strptime(play_end_time, '%Y-%m-%d %H:%M:%S')
+
+    db.session.commit()
+
+    return jsonify({"message": "Play time recorded successfully"}), 200
 
     
 
