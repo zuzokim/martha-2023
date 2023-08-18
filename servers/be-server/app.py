@@ -27,6 +27,7 @@ def serve_static(path):
     return send_from_directory(app.static_folder, path)
 
 
+
 # 전체 직업 조회
 @app.route('/job_list', methods=['GET'])
 def get_jobs():
@@ -46,6 +47,7 @@ def get_jobs():
     }
     
     return jsonify(response_data)
+
 
 
 # 특정 직업 선택
@@ -69,42 +71,36 @@ def get_job(job_id):
     return jsonify(response_data)
 
 
-# user id 생성, plqy start-end time 저장.
+
+# user 생성, play start-end time 저장
 @app.route('/play', methods=['POST'])
 def play():
 
-    user_id = request.json.get('userId')
-    play_start_time = request.json.get('startTime')
-    play_end_time = request.json.get('endTime')
+    data = request.json
 
-    # # 클라이언트와 시간 문자열 맞춰야 함!
-    # play_start_time = datetime.strptime(play_start_time, '%Y-%m-%d %H:%M:%S')
-    # play_end_time = datetime.strptime(play_end_time, '%Y-%m-%d %H:%M:%S')
+    userId = data.get('userId')
+    start_time = data.get('startTime')
+    end_time = data.get('endTime')
 
-    user = None
-
-    if user_id:
-        user = User.query.get(user_id)
+    user = User.query.filter_by(userId=userId).first()
 
     if user is None:
-        user = User()
-        db.session.add(user)
-        db.session.flush()
-        user_id = user.id
+        user = User(userId=userId)
 
-    # play_start_time 파라미터가 있으면 시작 시간을 기록
-    if play_start_time:
-        user.play_start_time = datetime.strptime(play_start_time, '%Y-%m-%d %H:%M:%S')
+    if start_time:
+        user.play_start_time = datetime.strptime(start_time, '%Y-%m-%d %H:%M:%S')
 
-    # play_end_time 파라미터가 있으면 종료 시간을 기록
-    if play_end_time:
-        user.play_end_time = datetime.strptime(play_end_time, '%Y-%m-%d %H:%M:%S')
+    if end_time:
+        user.play_end_time = datetime.strptime(end_time, '%Y-%m-%d %H:%M:%S')
 
+    db.session.add(user)
     db.session.commit()
 
     return jsonify({"message": "Play time recorded successfully"}), 200
 
     
+
+
 
 # ChatGPT - result
 @app.route('/result', methods=['GET'])
@@ -205,6 +201,10 @@ def generate_prompt(job_name):
 # - 귀여운 말투로 작성.
 # - 제목 제거.""".format(job_name.capitalize(), job_name.capitalize())
     return prompt
+
+
+
+
 
 
 
