@@ -1,5 +1,7 @@
 import csv
+from datetime import datetime
 from flask import Flask
+from sqlalchemy import Column, Integer, String, DateTime, Text
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -7,6 +9,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///martha.db'
 db = SQLAlchemy(app)
 
 
+# DB
 class Job(db.Model):
     __tablename__ = 'job'
 
@@ -22,7 +25,7 @@ class Image(db.Model):
     __tablename__ = 'image'
 
     id = db.Column(db.Integer, primary_key=True)
-    path = db.Column(db.String(100))
+    name = db.Column(db.String(100))
     job_id = db.Column(db.Integer, db.ForeignKey('job.id'))
 
     def __repr__(self):
@@ -32,6 +35,7 @@ class User(db.Model):
     __tablename__ = 'user'
 
     id = db.Column(db.Integer, primary_key=True)
+    userId = db.Column(db.String(50), unique=True, nullable=False)
     selected_job_id = db.Column(db.Integer, db.ForeignKey('job.id'))
     generated_text = db.Column(db.Text)
     generated_image = db.Column(db.String(100))
@@ -51,6 +55,8 @@ class LoadingMessage(db.Model):
         return f"<LoadingMessage {self.message}>"
 
 
+
+# load database
 def load_data_from_csv(job_csv_file, loading_message_csv_file):
     with open(job_csv_file, 'r') as file:
         csv_data = csv.DictReader(file)
@@ -60,9 +66,9 @@ def load_data_from_csv(job_csv_file, loading_message_csv_file):
             db.session.flush()
             job_id = job.id
 
-            image_paths = row['image'].split(';')
-            for image_path in image_paths:
-                image = Image(path=image_path, job_id=job_id)
+            image_names = row['image'].split(';')
+            for image_name in image_names:
+                image = Image(name=image_name, job_id=job_id)
                 db.session.add(image)
                 job.images.append(image)
     
