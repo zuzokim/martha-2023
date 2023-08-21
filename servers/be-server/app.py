@@ -79,19 +79,23 @@ def play():
     data = request.json
 
     userId = data.get('userId')
-    start_time = data.get('startTime')
-    end_time = data.get('endTime')
+    startTime = data.get('startTime')
+    endTime = data.get('endTime')
 
     user = User.query.filter_by(userId=userId).first()
 
     if user is None:
         user = User(userId=userId)
 
-    if start_time:
-        user.play_start_time = datetime.strptime(start_time, '%Y-%m-%d %H:%M:%S')
+    if startTime:
+        startTime_iso = startTime[:-1]
+        start_time = datetime.fromisoformat(startTime_iso)
+        user.play_start_time = start_time
 
-    if end_time:
-        user.play_end_time = datetime.strptime(end_time, '%Y-%m-%d %H:%M:%S')
+    if endTime:
+        endTime_iso = endTime[:-1]
+        end_time = datetime.fromisoformat(endTime_iso)
+        user.play_end_time = end_time
 
     db.session.add(user)
     db.session.commit()
@@ -172,7 +176,7 @@ def gpt_hidden():
         result = response['choices'][0]['message']['content']
 
         imgaes = Image.query.filter_by(job_id=job_id).all()
-        random_image = random.choice(imgaes).path
+        random_image = random.choice(imgaes).name
 
         hiddenResult = {
             'generatedText': result,
