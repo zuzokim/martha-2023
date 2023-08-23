@@ -81,6 +81,7 @@ def play():
     userId = data.get('userId')
     startTime = data.get('startTime')
     endTime = data.get('endTime')
+    selectedJobId = data.get('selectedJobId')
 
     user = User.query.filter_by(userId=userId).first()
 
@@ -96,6 +97,11 @@ def play():
         endTime_iso = endTime[:-1]
         end_time = datetime.fromisoformat(endTime_iso)
         user.play_end_time = end_time
+    
+    if selectedJobId:
+        job = Job.query.get(selectedJobId)
+        if job is not None:
+            user.selected_job_id = job.id
 
     db.session.add(user)
     db.session.commit()
