@@ -5,7 +5,6 @@ export { default as JobSelect } from "./JobSelect";
 export { default as CreateMap } from "./CreateMap";
 export { default as Playing } from "./Playing";
 
-export { default as AboutButton } from "./AboutButton";
 export { default as PlayButton } from "./PlayButton";
 export { default as PrevNavigation } from "./PrevNavigation";
 export { default as NextNavigation } from "./NextNavigation";

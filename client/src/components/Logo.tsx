@@ -10,13 +10,9 @@ const Logo = (props: LogoProps) => {
       src={LogoPng}
       alt="vertical_martha_logo"
       css={css`
-        /* width: 23vw; //99px */
-        /* height: 100%; */
-        height: 364px;
+        display: block;
+        height: 100%;
         aspect-ratio: 1 / 4.65;
-        @media (min-width: 420px) {
-          height: 464px;
-        }
       `}
       {...others}
     />

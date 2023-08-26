@@ -6,22 +6,24 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const rootStyle = css`
-  height: 100svh;
+  height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
 `;
 const gifContainerStyle = css`
   position: relative;
-  height: 50%;
-  width: 100%;
+  height: 60vh;
 `;
 
 const createMapGifStyle = (mapCreated: boolean) => css`
+  display: block;
+  height: 50vh;
   position: absolute;
-  left: -100%; /* anchor the image corners outside the viewable area (increase for large images) */
-  right: -100%;
-  top: 0;
-  bottom: -100%;
-  width: auto; /* dynamic width based on viewable area */
-  height: 100%; /* set height (swap these for variable height) */
+  top: 50%;
+  left: -50%;
+  transform: translate(-50%, -50%);
   margin: auto;
   z-index: -1;
   ${mapCreated &&
@@ -70,10 +72,11 @@ const createMapGifStyle = (mapCreated: boolean) => css`
 `;
 
 const createMapDoneTextStyle = css`
+  position: absolute;
+  top: 50%;
+  transform: translateY(-100%);
   font-size: 17px;
   color: var(--martha-secondary-color);
-  text-align: center;
-  transform: translateY(-100%);
   @keyframes fadeinout {
     0% {
       opacity: 0;
@@ -125,7 +128,7 @@ const createMapDoneTextStyle = css`
     }
   }
 
-  animation: fadeinout 3s ease-in-out;
+  animation: fadeinout 10s ease-in-out;
   -moz-animation: fadeinout 3s ease-in-out; /* Firefox */
   -webkit-animation: fadeinout 3s ease-in-out; /* Safari and Chrome */
   -o-animation: fadeinout 3s ease-in-out; /* Opera */
@@ -148,7 +151,7 @@ const CreateMap = (props: CreateMapProps) => {
 
   useEffect(() => {
     //connect and send jobType to socket server :
-    socket.emit("CreateMap", `${selectedJobInfo.jobType}`);
+    socket.emit("CreateMap", `${selectedJobInfo?.jobType}`);
     socket.on("connect", () => {
       setIsConnected(true);
     });
@@ -175,7 +178,6 @@ const CreateMap = (props: CreateMapProps) => {
 
   const navigate = useNavigate();
 
-
   useEffect(() => {
     if (readyToPlay) {
       navigate("/playing");
@@ -197,11 +199,7 @@ const CreateMap = (props: CreateMapProps) => {
           css={createMapGifStyle(mapCreated)}
         />
       </div>
-      {mapCreated && (
-        <>
-          <h1 css={createMapDoneTextStyle}>맵 생성 완료</h1>
-        </>
-      )}
+      {mapCreated && <h1 css={createMapDoneTextStyle}>맵 생성 완료</h1>}
     </div>
   );
 };

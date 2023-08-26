@@ -4,19 +4,25 @@ import {
   About,
   JobSelect,
   PlayIntro,
-  NavigationButtons,
   CreateMap,
   Playing,
 } from "./components";
-import { BrowserRouter, Route } from "react-router-dom";
+import { Route } from "react-router-dom";
 import SlideRoutes from "react-slide-routes";
+import TopButton from "./components/TopButton.tsx";
+import Result from "./components/Result.tsx";
+import BottomButton from "./components/BottomButton.tsx";
+import "large-small-dynamic-viewport-units-polyfill";
 
-const slidesContainerStyle = css`
-  display: grid;
-  place-items: center;
+const rootStyle = css`
+  height: calc(var(--1svh, 1vh) * 100);
   height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 28px;
   position: relative;
-  /* border: 1px solid blue; */
   .slide-routes {
     /* need to be set to 100% for 'fullpage' slides */
     width: 100%;
@@ -25,19 +31,19 @@ const slidesContainerStyle = css`
 
 const App = () => {
   return (
-    <BrowserRouter>
-      <div css={slidesContainerStyle}>
-        <SlideRoutes duration={1000}>
-          <Route path="/" element={<Main />}></Route>
-          <Route path="/about" element={<About />}></Route>
-          <Route path="/playintro" element={<PlayIntro />}></Route>
-          <Route path="/jobselect" element={<JobSelect />}></Route>
-          <Route path="/createmap" element={<CreateMap />}></Route>
-          <Route path="/playing" element={<Playing />}></Route>
-        </SlideRoutes>
-        <NavigationButtons />
-      </div>
-    </BrowserRouter>
+    <div css={rootStyle}>
+      <TopButton />
+      <SlideRoutes duration={1000}>
+        <Route path="/" element={<Main />}></Route>
+        <Route path="/about" element={<About />}></Route>
+        <Route path="/playintro" element={<PlayIntro />}></Route>
+        <Route path="/jobselect" element={<JobSelect />}></Route>
+        <Route path="/createmap" element={<CreateMap />}></Route>
+        <Route path="/playing" element={<Playing />}></Route>
+        <Route path="/result" element={<Result />}></Route>
+      </SlideRoutes>
+      <BottomButton />
+    </div>
   );
 };
 

@@ -5,24 +5,27 @@ import { connect } from "socket.io-client";
 import { useEffect, useState } from "react";
 
 const rootStyle = css`
+  height: calc(var(--1svh, 1vh) * 100);
   height: 100svh;
 `;
 const gifContainerStyle = css`
   position: relative;
   height: 100%;
-  /* width: 100%; */
 `;
 
 const playingGifStyle = (playing: boolean) => css`
   position: absolute;
+  top: 0;
   left: -100%; /* anchor the image corners outside the viewable area (increase for large images) */
   right: -100%;
-  top: 0;
-  /* bottom: -100%; */
   width: auto; /* dynamic width based on viewable area */
   height: 100%; /* set height (swap these for variable height) */
   margin: auto;
   transform: rotate(90deg) scale(0.8);
+  @media (min-width: 420px) {
+    transform: none;
+    width: 100%;
+  }
   ${playing &&
   css`
     animation: fadeout 3s;
@@ -75,7 +78,9 @@ const playingGuideTextStyle = css`
   left: 50%;
   transform: translateX(-50%);
   font-size: 17px;
-  color: white;
+  -webkit-text-fill-color: white; /* Will override color (regardless of order) */
+  -webkit-text-stroke-width: 0.5px;
+  -webkit-text-stroke-color: #c90303; //var(--martha-secondary-color);
   @keyframes fadeinout {
     0% {
       opacity: 0;
@@ -155,7 +160,7 @@ const Playing = (props: PlayingProps) => {
   const [playing, setPlaying] = useState(false);
 
   const URL = `http://localhost:8000`;
-  const socket = connect(URL);
+  const socket = connect(URL, { autoConnect: false });
 
   useEffect(() => {
     socket.on("connect", () => {
