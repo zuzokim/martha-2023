@@ -1,19 +1,16 @@
 import { css } from "@emotion/react";
 import { jobNameList } from "./constants";
-import JobSelectHeader from "./JobSelectHeader";
 import { useLocation } from "react-router-dom";
 import { useJobSelectStore, usePathStore } from "./store";
 import { useEffect, useState } from "react";
 import Picker from "react-mobile-picker";
 
 const containerStyle = () => css`
+  height: 60vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
-  height: 100svh;
-  gap: 24px;
-  padding: 0 40px 40px 40px;
+  align-items: center;
 `;
 
 const jobSelectContainerStyle = () => css`
@@ -113,9 +110,9 @@ const JobSelect = (props: JobSelectProps) => {
 
   return (
     <div css={containerStyle}>
-      <JobSelectHeader />
       <div css={jobSelectContainerStyle}>
         <Picker
+          // wheel="natural"
           optionGroups={jobOptionsDict}
           valueGroups={selectedJobDict}
           onChange={handleChange}
