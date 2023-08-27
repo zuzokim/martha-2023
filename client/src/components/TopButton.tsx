@@ -46,7 +46,11 @@ const TopButton = (props: TopButtonProps) => {
       break;
     case "/playing":
       break;
-    case "/result":
+    case "/normal-result":
+      src = HeaderRoundPng;
+      headerText = "당신이 꾼 꿈은..";
+      break;
+    case "/hidden-result":
       src = HeaderRoundPng;
       headerText = "당신이 꾼 꿈은..";
       break;

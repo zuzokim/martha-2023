@@ -3,8 +3,9 @@ import { introText } from "./constants";
 import { usePathStore } from "./store";
 import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
+import Haemonging from "./Haemonging";
 
-const playIntroContainerStyle = () => css`
+const normalResultContainerStyle = () => css`
   height: 60vh;
   display: flex;
   flex-direction: column;
@@ -45,8 +46,8 @@ const textStyle = () => css`
   padding: 0px 20px 0px 30px;
 `;
 
-export interface PlayIntroProps {}
-const PlayIntro = (props: PlayIntroProps) => {
+export interface NormalResultProps {}
+const NormalResult = (props: NormalResultProps) => {
   const location = useLocation();
 
   const { setPath } = usePathStore();
@@ -55,13 +56,18 @@ const PlayIntro = (props: PlayIntroProps) => {
     setPath(location.pathname);
   }, [location.pathname, setPath]);
 
+  const haemongDone = true;
+
   return (
-    <div css={playIntroContainerStyle}>
-      <div css={textContainerStyle}>
-        <p css={textStyle}>{introText}</p>
+    <>
+      <div css={normalResultContainerStyle}>
+        <div css={textContainerStyle}>
+          <p css={textStyle}>{introText}</p>
+        </div>
       </div>
-    </div>
+      <Haemonging haemongDone={haemongDone}/>
+    </>
   );
 };
 
-export default PlayIntro;
+export default NormalResult;

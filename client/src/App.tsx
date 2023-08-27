@@ -6,8 +6,11 @@ import {
   PlayIntro,
   CreateMap,
   Playing,
+  Haemonging,
+  NormalResult,
+  HiddenResult,
 } from "./components";
-import { Route } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import SlideRoutes from "react-slide-routes";
 import TopButton from "./components/TopButton.tsx";
 import Result from "./components/Result.tsx";
@@ -40,7 +43,8 @@ const App = () => {
         <Route path="/jobselect" element={<JobSelect />}></Route>
         <Route path="/createmap" element={<CreateMap />}></Route>
         <Route path="/playing" element={<Playing />}></Route>
-        <Route path="/result" element={<Result />}></Route>
+        <Route path="/normal-result" element={<NormalResult />}></Route>
+        <Route path="/hidden-result" element={<HiddenResult />}></Route>
       </SlideRoutes>
       <BottomButton />
     </div>

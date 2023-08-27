@@ -4,6 +4,9 @@ export { default as PlayIntro } from "./PlayIntro";
 export { default as JobSelect } from "./JobSelect";
 export { default as CreateMap } from "./CreateMap";
 export { default as Playing } from "./Playing";
+export { default as Haemonging } from "./Haemonging";
+export { default as NormalResult } from "./NormalResult";
+export { default as HiddenResult } from "./HiddenResult";
 
 export { default as PlayButton } from "./PlayButton";
 export { default as PrevNavigation } from "./PrevNavigation";
