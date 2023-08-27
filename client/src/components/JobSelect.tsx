@@ -41,6 +41,9 @@ const jobSelectContainerStyle = () => css`
           }
           .picker-item-selected {
             color: white !important;
+            font-size: 18px;
+            -webkit-text-stroke-width: 0.3px;
+            -webkit-text-stroke-color: white;
           }
         }
       }

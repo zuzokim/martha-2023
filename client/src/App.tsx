@@ -17,14 +17,14 @@ import Result from "./components/Result.tsx";
 import BottomButton from "./components/BottomButton.tsx";
 import "large-small-dynamic-viewport-units-polyfill";
 
-const rootStyle = css`
+const rootStyle = (isHiddenResult: boolean) => css`
   height: calc(var(--1svh, 1vh) * 100);
   height: 100svh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 28px;
+  gap: ${isHiddenResult ? "0" : "28px"};
   position: relative;
   .slide-routes {
     /* need to be set to 100% for 'fullpage' slides */
@@ -33,8 +33,10 @@ const rootStyle = css`
 `;
 
 const App = () => {
+  const { pathname } = useLocation();
+  const isHiddenResult = pathname === "/hidden-result";
   return (
-    <div css={rootStyle}>
+    <div css={() => rootStyle(isHiddenResult)}>
       <TopButton />
       <SlideRoutes duration={1000}>
         <Route path="/" element={<Main />}></Route>
