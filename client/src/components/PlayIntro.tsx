@@ -40,7 +40,7 @@ const textContainerStyle = css`
 const textStyle = () => css`
   font-size: 17px;
   line-height: 1.8;
-  letter-spacing: 0.125rem;
+  letter-spacing: 0.125;
   color: var(--martha-secondary-color);
   padding: 0px 20px 0px 30px;
 `;

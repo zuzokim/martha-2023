@@ -66,6 +66,8 @@ const TopButton = (props: TopButtonProps) => {
   const disablePathChange = pathname !== "/";
   const hideTopButton = pathname === "/playing";
 
+  const isHiddenResultPage = pathname === "/hidden-result";
+
   return (
     <div
       css={css`
@@ -89,7 +91,7 @@ const TopButton = (props: TopButtonProps) => {
           css={css`
             display: flex;
             justify-content: center;
-            width: 50%;
+            width: ${isHiddenResultPage ? "60%" : "50%"};
             display: block;
           `}
           alt="headerButton"
