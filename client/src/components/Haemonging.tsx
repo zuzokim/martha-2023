@@ -110,7 +110,12 @@ const Haemonging = (props: HaemongingProps) => {
   const { haemongDone, ...others } = props;
 
   return (
-    <div css={rootStyle(haemongDone)} {...others}>
+    <div
+      css={rootStyle(haemongDone)}
+      {...others}
+      id="haemonging"
+      data-html2canvas-ignore="true"
+    >
       <div css={haemongingGifWrapperStyle}>
         <img src={HaemongingGif} alt="haemonging" css={haemongingGifStyle} />
       </div>

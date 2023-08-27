@@ -59,14 +59,14 @@ const NormalResult = (props: NormalResultProps) => {
   const haemongDone = true;
 
   return (
-    <>
-      <div css={normalResultContainerStyle}>
+    <div id="normal-result-page">
+      <div css={normalResultContainerStyle} id="normal-result-container">
         <div css={textContainerStyle}>
           <p css={textStyle}>{introText}</p>
         </div>
       </div>
-      <Haemonging haemongDone={haemongDone}/>
-    </>
+      <Haemonging haemongDone={haemongDone} />
+    </div>
   );
 };
 
