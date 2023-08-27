@@ -36,7 +36,7 @@ const App = () => {
   const { pathname } = useLocation();
   const isHiddenResult = pathname === "/hidden-result";
   return (
-    <div css={() => rootStyle(isHiddenResult)}>
+    <div css={() => rootStyle(isHiddenResult)} id="app">
       <TopButton />
       <SlideRoutes duration={1000}>
         <Route path="/" element={<Main />}></Route>

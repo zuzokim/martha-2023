@@ -7,6 +7,7 @@ import ArrowRight from "../../public/assets/svgs/arrow_right.png";
 
 import { css } from "@emotion/react";
 import { useLocation, useNavigate } from "react-router";
+import html2canvas from "html2canvas";
 
 const headerTextStyle = css`
   font-family: var(--martha-font-arita-dotum-medium);
@@ -86,12 +87,43 @@ const BottomButton = (props: BottomButtonProps) => {
     }
   };
 
+  const handleCapture = () => {
+    const onSaveAs = (uri: string, filename: string) => {
+      console.log("save");
+      let link = document.createElement("a");
+      document.body.appendChild(link);
+      link.href = uri;
+      link.download = filename;
+      link.click();
+      document.body.removeChild(link);
+    };
+    const app = document.getElementById("app");
+    const normalResultContainer = document.getElementById(
+      "normal-result-container"
+    );
+
+    if (app) {
+      app.setAttribute(
+        "style",
+        "background-color: transparent !important; height: 100% !important;"
+      );
+      normalResultContainer?.setAttribute("style", "height: fit-content;");
+
+      html2canvas(app).then((canvas) => {
+        onSaveAs(canvas.toDataURL("image/png"), "normal-result-download.png");
+        app.setAttribute("style", "");
+        normalResultContainer?.setAttribute("style", "");
+      });
+    }
+  };
+
   const disablePathChange = pathname === "/playing";
   const isResult =
     pathname === "/normal-result" || pathname === "/hidden-result";
 
   return (
     <div
+      data-html2canvas-ignore="true"
       css={css`
         display: ${disablePathChange ? "none" : "flex"};
         justify-content: center;
@@ -151,7 +183,13 @@ const BottomButton = (props: BottomButtonProps) => {
             }
           `}
           alt="nextButton"
-          onClick={handleNextClick}
+          onClick={() => {
+            if (isResult) {
+              handleCapture();
+            } else {
+              handleNextClick();
+            }
+          }}
           {...others}
         />
       )}

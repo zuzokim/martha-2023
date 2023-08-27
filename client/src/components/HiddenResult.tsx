@@ -198,7 +198,12 @@ const HiddenResult = (props: HiddenResultProps) => {
       {/* <div css={verticalBlueGradientStyle}>
         <div css={verticalRedGradientStyle} />
       </div> */}
-      <img src={GradientPng} alt="gradient" css={gradientStyle} />
+      <img
+        src={GradientPng}
+        alt="gradient"
+        css={gradientStyle}
+        data-html2canvas-ignore="true" //TODO: ??
+      />
       <div css={hiddenResultContainerStyle}>
         <div css={imageCircularBackGroundContainerStyle}>
           <svg
