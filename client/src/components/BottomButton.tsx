@@ -8,7 +8,6 @@ import ArrowRight from "../../public/assets/svgs/arrow_right.png";
 import { css } from "@emotion/react";
 import { useLocation, useNavigate } from "react-router";
 
-
 const headerTextStyle = css`
   font-family: var(--martha-font-arita-dotum-medium);
   color: var(--martha-secondary-color);
@@ -59,7 +58,12 @@ const BottomButton = (props: BottomButtonProps) => {
       break;
     case "/playing":
       break;
-    case "/result":
+    case "/normal-result":
+      leftSrc = HomeButtonPng;
+      rightSrc = PrintButtonPng;
+      prevPath = "/";
+      break;
+    case "/hidden-result":
       leftSrc = HomeButtonPng;
       rightSrc = PrintButtonPng;
       prevPath = "/";
@@ -83,6 +87,8 @@ const BottomButton = (props: BottomButtonProps) => {
   };
 
   const disablePathChange = pathname === "/playing";
+  const isResult =
+    pathname === "/normal-result" || pathname === "/hidden-result";
 
   return (
     <div
@@ -108,6 +114,11 @@ const BottomButton = (props: BottomButtonProps) => {
 
             width: ${showChangePathButtons ? "14px" : "50%"};
             height: ${showChangePathButtons ? "24px" : "none"};
+            ${isResult &&
+            css`
+              width: 113px;
+              height: auto;
+            `}
             display: block;
             &:active {
               opacity: 0.7;
@@ -128,6 +139,11 @@ const BottomButton = (props: BottomButtonProps) => {
             justify-content: center;
             width: ${showChangePathButtons ? "14px" : "50%"};
             height: ${showChangePathButtons ? "24px" : "none"};
+            ${isResult &&
+            css`
+              width: 113px;
+              height: auto;
+            `}
             display: block;
             margin-left: 16px;
             &:active {

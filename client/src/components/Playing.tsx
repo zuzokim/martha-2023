@@ -181,6 +181,8 @@ const Playing = (props: PlayingProps) => {
       socket.off("OnPlay");
     };
   }, [socket]);
+
+  //TODO: 숨겨진 트리거를 발견했습니다
   return (
     <div css={rootStyle}>
       <div css={gifContainerStyle}>
