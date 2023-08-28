@@ -4,6 +4,7 @@ import {
   NEXT_NAV_PATH,
   NavigationType,
   JobInfo,
+  JobType,
 } from "./constants";
 
 export interface PathStoreState {
@@ -51,12 +52,28 @@ export const useJobSelectStore = create<JobSelectStoreState>((set) => ({
     jobType: "COSMIC",
   },
   setSelectedJobInfo: (jobName) => {
-    set(({ jobList }) => ({
-      //set the jobList with queried jobList from server.
-      selectedJobInfo: jobList?.find(
-        (job) => job.jobName === (jobName ?? "우주 엘리베이터 안내원")
-      ),
-    }));
+    set(({ jobList }) => {
+      console.log(jobName, "on store");
+      return {
+        //set the jobList with queried jobList from server.
+        selectedJobInfo: (jobList
+          ? jobList
+          : [
+              {
+                jobName: "우주 엘리베이터 안내원",
+                jobId: 14,
+                jobType: "COSMIC" as JobType,
+              },
+            ]
+        ).find(
+          (job) => job.jobName === (jobName ?? "우주 엘리베이터 안내원")
+        ) ?? {
+          jobName: "우주 엘리베이터 안내원",
+          jobId: Math.random(),
+          jobType: "COSMIC" as JobType,
+        },
+      };
+    });
   },
   jobList: [],
   setJobList: (jobList) => {

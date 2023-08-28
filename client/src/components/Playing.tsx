@@ -157,23 +157,17 @@ const playingGuideTextStyle = css`
 export interface PlayingProps {}
 
 const Playing = (props: PlayingProps) => {
-  const [playing, setPlaying] = useState(false);
+  const [playStatus, setPlayStatus] = useState<
+    "Playing" | "Finished" | "Error" | null
+  >(null);
 
   const URL = `http://localhost:8000`;
   const socket = connect(URL, { autoConnect: false });
 
   useEffect(() => {
-    socket.on("connect", () => {
-      // setIsConnected(true);
-    });
-    socket.on("disconnect", () => {
-      // setIsConnected(false);
-    });
-    // socket.on("CreateMap", (data) => {
-    //   setMapCreated(data === "Created");
-    // });
     socket.on("OnPlay", (data) => {
-      setPlaying(data === "Playing"); //Playing , Finished, Error
+      // setPlaying(data === "Playing"); //Playing , Finished, Error
+      setPlayStatus(data);
     });
     return () => {
       socket.off("connect");
@@ -182,11 +176,51 @@ const Playing = (props: PlayingProps) => {
     };
   }, [socket]);
 
+  const { selectedJobInfo } = useJobSelectStore();
+  const clientUserId = localStorage.getItem("userId");
+
+  useEffect(() => {
+    const playStartingData = {
+      userId: clientUserId,
+      startTime: new Date().toISOString(),
+      selectedJobId: selectedJobInfo.jobId,
+    };
+    const playFinishingData = {
+      userId: clientUserId,
+      endTime: new Date().toISOString(),
+      selectedJobId: selectedJobInfo.jobId,
+    };
+
+    async function savePlay(playStatusData: any) {
+      try {
+        const response = await fetch(`http://127.0.0.1:5000/play`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(playStatusData),
+        });
+      } catch (error) {
+        console.log(error);
+        // throw new Error(error.message);
+      }
+    }
+    if (playStatus === "Playing") {
+      savePlay(playStartingData);
+    } else if (playStatus === "Finished") {
+      savePlay(playFinishingData);
+    }
+  }, [playStatus]);
+
   //TODO: 숨겨진 트리거를 발견했습니다
   return (
     <div css={rootStyle}>
       <div css={gifContainerStyle}>
-        <img src={playGif} alt="playing" css={playingGifStyle(playing)} />
+        <img
+          src={playGif}
+          alt="playing"
+          css={playingGifStyle(playStatus === "Playing")}
+        />
         <h1 css={playingGuideTextStyle}>사운드에 집중하세요</h1>
       </div>
     </div>
