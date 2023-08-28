@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, redirect, render_template, request, url_for, send_from_directory
-from models import db, Job, Image
+from models import db, Job, Image, User, LoadingMessage
 from flask_cors import CORS
+from datetime import datetime
 
 import os
 import random
@@ -8,7 +9,7 @@ import openai
 
 app = Flask(__name__, static_folder='static')
 CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True, methods=["GET", "POST"])
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///job.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///martha.db'
 db.init_app(app)
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
@@ -24,6 +25,7 @@ def hello():
 @app.route('/static/<path:path>')
 def serve_static(path):
     return send_from_directory(app.static_folder, path)
+
 
 
 # 전체 직업 조회
@@ -47,6 +49,7 @@ def get_jobs():
     return jsonify(response_data)
 
 
+
 # 특정 직업 선택
 @app.route('/job_list/<int:job_id>', methods=['GET'])
 def get_job(job_id):
@@ -67,7 +70,47 @@ def get_job(job_id):
 
     return jsonify(response_data)
 
+
+
+# user 생성, play start-end time 저장
+@app.route('/play', methods=['POST'])
+def play():
+
+    data = request.json
+
+    userId = data.get('userId')
+    startTime = data.get('startTime')
+    endTime = data.get('endTime')
+    selectedJobId = data.get('selectedJobId')
+
+    user = User.query.filter_by(userId=userId).first()
+
+    if user is None:
+        user = User(userId=userId)
+
+    if startTime:
+        startTime_iso = startTime[:-1]
+        start_time = datetime.fromisoformat(startTime_iso)
+        user.play_start_time = start_time
+
+    if endTime:
+        endTime_iso = endTime[:-1]
+        end_time = datetime.fromisoformat(endTime_iso)
+        user.play_end_time = end_time
     
+    if selectedJobId:
+        job = Job.query.get(selectedJobId)
+        if job is not None:
+            user.selected_job_id = job.id
+
+    db.session.add(user)
+    db.session.commit()
+
+    return jsonify({"message": "Play time recorded successfully"}), 200
+
+    
+
+
 
 # ChatGPT - result
 @app.route('/result', methods=['GET'])
@@ -139,7 +182,7 @@ def gpt_hidden():
         result = response['choices'][0]['message']['content']
 
         imgaes = Image.query.filter_by(job_id=job_id).all()
-        random_image = random.choice(imgaes).path
+        random_image = random.choice(imgaes).name
 
         hiddenResult = {
             'generatedText': result,
@@ -168,6 +211,10 @@ def generate_prompt(job_name):
 # - 귀여운 말투로 작성.
 # - 제목 제거.""".format(job_name.capitalize(), job_name.capitalize())
     return prompt
+
+
+
+
 
 
 
