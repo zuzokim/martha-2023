@@ -13,7 +13,6 @@ import {
 import { Route, Routes, useLocation } from "react-router-dom";
 import SlideRoutes from "react-slide-routes";
 import TopButton from "./components/TopButton.tsx";
-import Result from "./components/Result.tsx";
 import BottomButton from "./components/BottomButton.tsx";
 import "large-small-dynamic-viewport-units-polyfill";
 

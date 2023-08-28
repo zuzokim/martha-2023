@@ -101,6 +101,11 @@ const BottomButton = (props: BottomButtonProps) => {
     const normalResultContainer = document.getElementById(
       "normal-result-container"
     );
+    const hiddenResultContainer = document.getElementById(
+      "hidden-result-container"
+    );
+    const imageContainer = document.getElementById("image-container");
+    const textContainer = document.getElementById("text-container");
 
     if (app) {
       app.setAttribute(
@@ -108,11 +113,17 @@ const BottomButton = (props: BottomButtonProps) => {
         "background-color: transparent !important; height: 100% !important;"
       );
       normalResultContainer?.setAttribute("style", "height: fit-content;");
+      hiddenResultContainer?.setAttribute("style", "height: fit-content;");
+      textContainer?.setAttribute("style", "height: fit-content");
+      imageContainer?.setAttribute("style", "visibility: hidden;");
 
       html2canvas(app).then((canvas) => {
         onSaveAs(canvas.toDataURL("image/png"), "normal-result-download.png");
         app.setAttribute("style", "");
         normalResultContainer?.setAttribute("style", "");
+        hiddenResultContainer?.setAttribute("style", "");
+        textContainer?.setAttribute("style", "");
+        imageContainer?.setAttribute("style", "");
       });
     }
   };

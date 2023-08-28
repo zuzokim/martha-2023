@@ -12,6 +12,11 @@ const gradientStyle = css`
   position: absolute;
   z-index: -1;
   top: 0;
+  @media (min-width: 720px) {
+    width: 70%;
+    left: 50%;
+    transform: translate(-50%);
+  }
   width: 100%;
   height: calc(var(--1svh, 1vh) * 100);
   height: 100svh;
@@ -97,7 +102,7 @@ const imageStyle = css`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 999;
+  z-index: 1;
 `;
 
 const textContainerGradientStyle = css`
@@ -107,7 +112,7 @@ const textContainerGradientStyle = css`
   width: 300px;
   height: 200px;
   position: absolute;
-  top: 350px;
+  top: 55%;
   z-index: -1;
 `;
 
@@ -161,7 +166,7 @@ const textStyle = () => css`
   color: var(--martha-secondary-color);
   padding: 0px 20px 0px 30px;
   position: relative;
-  z-index: 9999;
+  z-index: 2;
 `;
 
 export interface HiddenResultProps {}
@@ -202,11 +207,12 @@ const HiddenResult = (props: HiddenResultProps) => {
         src={GradientPng}
         alt="gradient"
         css={gradientStyle}
-        data-html2canvas-ignore="true" //TODO: ??
+        data-html2canvas-ignore="true"
       />
-      <div css={hiddenResultContainerStyle}>
+      <div css={hiddenResultContainerStyle} id="hidden-result-container">
         <div css={imageCircularBackGroundContainerStyle}>
           <svg
+            id="image-container"
             css={imageBackgroundStyle}
             xmlns="http://www.w3.org/2000/svg"
             width="339"
@@ -246,7 +252,10 @@ const HiddenResult = (props: HiddenResultProps) => {
               </filter>
             </defs>
           </svg>
-          <div css={imageBackgroundShadowStyle} />
+          <div
+            css={imageBackgroundShadowStyle}
+            data-html2canvas-ignore="true"
+          />
           <img
             // src={`${VITE_FLASK_SERVER_URL}/static/${data?.hiddenResult.generatedImageName}`}
             src={samplePng}
@@ -254,8 +263,8 @@ const HiddenResult = (props: HiddenResultProps) => {
             css={imageStyle}
           />
         </div>
-        <div css={textContainerGradientStyle} />
-        <div css={textContainerStyle}>
+        <div css={textContainerGradientStyle} data-html2canvas-ignore="true" />
+        <div css={textContainerStyle} id="text-container">
           <p css={textStyle}>{introText}</p>
         </div>
         <Haemonging haemongDone={haemongDone} />

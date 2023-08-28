@@ -11,7 +11,7 @@ const rootStyle = (haemongDone: boolean) => css`
   position: absolute;
   top: 0;
   width: 100%;
-  z-index: 1;
+  z-index: 999;
   ${haemongDone &&
   css`
     animation: fadeout 3s;

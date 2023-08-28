@@ -59,7 +59,7 @@ const NormalResult = (props: NormalResultProps) => {
   const haemongDone = true;
 
   return (
-    <div id="normal-result-page">
+    <div>
       <div css={normalResultContainerStyle} id="normal-result-container">
         <div css={textContainerStyle}>
           <p css={textStyle}>{introText}</p>
