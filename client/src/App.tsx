@@ -15,6 +15,7 @@ import SlideRoutes from "react-slide-routes";
 import TopButton from "./components/TopButton.tsx";
 import BottomButton from "./components/BottomButton.tsx";
 import "large-small-dynamic-viewport-units-polyfill";
+import { nanoid } from "nanoid";
 
 const rootStyle = (isHiddenResult: boolean) => css`
   height: calc(var(--1svh, 1vh) * 100);
@@ -34,6 +35,7 @@ const rootStyle = (isHiddenResult: boolean) => css`
 const App = () => {
   const { pathname } = useLocation();
   const isHiddenResult = pathname === "/hidden-result";
+
   return (
     <div css={() => rootStyle(isHiddenResult)} id="app">
       <TopButton />

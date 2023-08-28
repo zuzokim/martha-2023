@@ -8,6 +8,10 @@ import ArrowRight from "../../public/assets/svgs/arrow_right.png";
 import { css } from "@emotion/react";
 import { useLocation, useNavigate } from "react-router";
 import html2canvas from "html2canvas";
+import { useJobSelectStore } from "./store";
+import { connect } from "socket.io-client";
+import { nanoid } from "nanoid";
+import { useEffect } from "react";
 
 const headerTextStyle = css`
   font-family: var(--martha-font-arita-dotum-medium);
@@ -78,12 +82,43 @@ const BottomButton = (props: BottomButtonProps) => {
   const handlePrevClick = () => {
     if (prevPath) {
       navigate(prevPath);
+      if (prevPath === "/") {
+        localStorage.removeItem("userId");
+      }
     }
   };
 
   const handleNextClick = () => {
     if (nextPath) {
       navigate(nextPath);
+    }
+  };
+
+  const { selectedJobInfo } = useJobSelectStore();
+
+  const handleSelect = async () => {
+    const URL = `http://localhost:8000`;
+    const socket = connect(URL);
+
+    try {
+      const selectedJob = {
+        jobId: selectedJobInfo.jobId,
+        jobName: selectedJobInfo.jobName,
+      };
+
+      const response = await fetch(
+        `http://127.0.0.1:5000/job_list:${selectedJob.jobId}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(selectedJob),
+        }
+      );
+    } catch (error) {
+      console.log(error);
+      // throw new Error(error.message);
     }
   };
 
@@ -131,6 +166,12 @@ const BottomButton = (props: BottomButtonProps) => {
   const disablePathChange = pathname === "/playing";
   const isResult =
     pathname === "/normal-result" || pathname === "/hidden-result";
+  const jobSelected = pathname === "/jobselect";
+
+  const clientUserId = localStorage.getItem("userId");
+  useEffect(() => {
+    if (!clientUserId) localStorage.setItem("userId", nanoid());
+  }, []);
 
   return (
     <div
@@ -195,7 +236,10 @@ const BottomButton = (props: BottomButtonProps) => {
           `}
           alt="nextButton"
           onClick={() => {
-            if (isResult) {
+            if (jobSelected) {
+              handleSelect();
+              handleNextClick();
+            } else if (isResult) {
               handleCapture();
             } else {
               handleNextClick();
