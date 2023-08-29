@@ -91,7 +91,8 @@ def play():
     if startTime:
         startTime_iso = startTime[:-1]
         start_time = datetime.fromisoformat(startTime_iso)
-        user.play_start_time = start_time
+        if user.play_start_time is None or start_time < user.play_start_time:
+            user.play_start_time = start_time
 
     if endTime:
         endTime_iso = endTime[:-1]
