@@ -146,23 +146,22 @@ const CreateMap = (props: CreateMapProps) => {
   const [mapCreated, setMapCreated] = useState(false);
   const [readyToPlay, setMapReadyToPlay] = useState(false);
 
-  const URL = `http://localhost:8000`;
+  const URL = `http://192.168.0.36:8000`;
   const socket = connect(URL);
 
   useEffect(() => {
-    //connect and send jobType to socket server :
-    socket.emit("CreateMap", `${selectedJobInfo?.jobType}`);
     socket.on("connect", () => {
       setIsConnected(true);
     });
     socket.on("disconnect", () => {
+      socket.connect();
       setIsConnected(false);
       socket.emit("Init", "Init");
     });
     socket.on("CreateMap", (data) => {
       setMapCreated(data === "Created");
       if (data === "Error") {
-        //TODO: disconnected : init / reload 처리
+        //TODO: disconnected : reload 처리
         socket.emit("Init", "Init");
       }
     });
@@ -184,11 +183,7 @@ const CreateMap = (props: CreateMapProps) => {
     }
   }, [readyToPlay]);
 
-  useEffect(() => {
-    if (!isConnected) {
-      //TODO: disconnected : init / reload 처리
-    }
-  }, [isConnected]);
+  console.log(mapCreated, "mapCreated");
 
   return (
     <div css={rootStyle}>

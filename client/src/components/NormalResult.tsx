@@ -1,8 +1,6 @@
 import { css } from "@emotion/react";
 import { introText } from "./constants";
-import { usePathStore } from "./store";
 import { useLocation } from "react-router-dom";
-import { useEffect } from "react";
 import Haemonging from "./Haemonging";
 
 const normalResultContainerStyle = () => css`
@@ -50,13 +48,8 @@ export interface NormalResultProps {}
 const NormalResult = (props: NormalResultProps) => {
   const location = useLocation();
 
-  const { setPath } = usePathStore();
-
-  useEffect(() => {
-    setPath(location.pathname);
-  }, [location.pathname, setPath]);
-
   const haemongDone = true;
+  //TODO: api call
 
   return (
     <div>

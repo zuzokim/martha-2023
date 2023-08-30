@@ -29,7 +29,7 @@ const NavigationButtons = (props: NavigationButtonsProps) => {
 
   const location = useLocation();
 
-  const URL = `http://localhost:8000`;
+  const URL = `http://192.168.0.36:8000`;
   const socket = connect(URL);
 
   const handleClick = async () => {

@@ -97,29 +97,9 @@ const BottomButton = (props: BottomButtonProps) => {
   const { selectedJobInfo } = useJobSelectStore();
 
   const handleSelect = async () => {
-    const URL = `http://localhost:8000`;
+    const URL = `http://192.168.0.36:8000`;
     const socket = connect(URL);
-
-    try {
-      const selectedJob = {
-        jobId: selectedJobInfo.jobId,
-        jobName: selectedJobInfo.jobName,
-      };
-
-      const response = await fetch(
-        `http://127.0.0.1:5000/job_list:${selectedJob.jobId}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(selectedJob),
-        }
-      );
-    } catch (error) {
-      console.log(error);
-      // throw new Error(error.message);
-    }
+    socket.emit("CreateMap", `${selectedJobInfo?.jobType}`);
   };
 
   const handleCapture = () => {

@@ -1,8 +1,6 @@
 import { css } from "@emotion/react";
 import { aboutText } from "./constants";
-import { useEffect } from "react";
 import { useLocation } from "react-router";
-import { usePathStore } from "./store";
 
 const aboutContainerStyle = () => css`
   height: 60vh;
@@ -48,12 +46,6 @@ const textStyle = () => css`
 export interface AboutProps {}
 const About = (props: AboutProps) => {
   const location = useLocation();
-
-  const { setPath } = usePathStore();
-
-  useEffect(() => {
-    setPath(location.pathname);
-  }, [location.pathname, setPath]);
 
   return (
     <div css={aboutContainerStyle}>
