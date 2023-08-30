@@ -1,8 +1,7 @@
 import { css } from "@emotion/react";
-import HaemongingGif from "../../public/assets/svgs/play.gif"; //TODO: change gif
+import HaemongingGif from "../../public/assets/svgs/haemonging.gif"; //TODO: change gif
 import { generateRandomIndex, haemongingText } from "./constants";
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+
 
 const rootStyle = (haemongDone: boolean) => css`
   height: calc(var(--1svh, 1vh) * 100);
