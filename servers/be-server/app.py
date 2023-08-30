@@ -2,6 +2,7 @@ from flask import Flask, jsonify, redirect, render_template, request, url_for, s
 from models import db, Job, Image, User, LoadingMessage
 from flask_cors import CORS
 from datetime import datetime
+import threading
 
 import os
 import random
@@ -112,40 +113,52 @@ def play():
     
 
 
+# ChatGPT - generate
+processed_requests = {}
+lock = threading.Lock()
 
-# ChatGPT - result
-@app.route('/result', methods=['GET'])
+@app.route('/waitfor_result', methods=['GET'])
 def gpt_normal():
 
-    job_id = request.args.get('jobId')
+    userId = request.args.get('userId')
 
-    job = Job.query.filter_by(id=job_id).first()
+    with lock:
+        if userId in processed_requests:
+            return jsonify({"message": "Duplicate request. Ignored"}), 400
+        
+        processed_requests[userId] = True
 
-    if job:
-        job_name = job.name
+    userId = request.args.get('userId')
 
-        response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
-            messages=[
-                {"role": "system", "content": "You are a helpful assistant."},
-                {"role": "user", "content": generate_prompt(job_name)}
-            ],
-        )
-        result = response['choices'][0]['message']['content']
+    user = User.query.filter_by(userId=userId).first()
 
-        normalResult = {
-            'generatedText': result,
-            'jobId': job_id,
-            'jobName': job_name
-        }
+    if user:
+        job_id = user.selected_job_id
+        job = Job.query.filter_by(id=job_id).first()
 
-        response_data = {
-            'normalResult': normalResult
-        }
+        if job:
+            job_name = job.name
 
-        return jsonify(response_data)
+            try:
+                response = openai.ChatCompletion.create(
+                    model="gpt-3.5-turbo",
+                    messages=[
+                        {"role": "system", "content": "You are a helpful assistant."},
+                        {"role": "user", "content": generate_prompt(job_name)}
+                    ],
+                )
+                result = response['choices'][0]['message']['content']
+
+                user.generated_text = result
+                db.session.commit()
+
+                return jsonify({"message": "Generated text and saved successfully."}), 200
+            except Exception as e:
+                return jsonify({"error": f"Error generating text: {str(e)}"}), 500
+        else:
+            return jsonify({'error': 'Job not found.'})
     else:
-        return jsonify({'error': 'Job not found.'})
+        return jsonify({'error': 'User not found.'})
 
 def generate_prompt(job_name):
     prompt = """A. {0}의 성향과 꿈에 관한 3문단의 하이쿠를 적어 주세요.
@@ -162,43 +175,57 @@ def generate_prompt(job_name):
 
 
 
-# ChatGPT - resultHidden
-@app.route('/hidden_result', methods=['GET'])
+
+# ChatGPT - generate hidden
+processed_requests = {}
+lock = threading.Lock()
+
+@app.route('/waitfor_hidden_result', methods=['GET'])
 def gpt_hidden():
 
-    job_id = request.args.get('jobId')
+    userId = request.args.get('userId')
 
-    job = Job.query.filter_by(id=job_id).first()
+    with lock:
+        if userId in processed_requests:
+            return jsonify({"message": "Duplicate request. Ignored"}), 400
+        
+        processed_requests[userId] = True
 
-    if job:
-        job_name = job.name
+    userId = request.args.get('userId')
 
-        response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
-            messages=[
-                {"role": "system", "content": "You are a helpful assistant."},
-                {"role": "user", "content": generate_prompt(job_name)}
-            ],
-        )
-        result = response['choices'][0]['message']['content']
+    user = User.query.filter_by(userId=userId).first()
 
-        imgaes = Image.query.filter_by(job_id=job_id).all()
-        random_image = random.choice(imgaes).name
+    if user:
+        job_id = user.selected_job_id
+        job = Job.query.filter_by(id=job_id).first()
 
-        hiddenResult = {
-            'generatedText': result,
-            'jobId': job_id,
-            'jobName': job_name,
-            'generatedImageName': random_image
-        }
+        if job:
+            job_name = job.name
 
-        response_data = {
-            'hiddenResult': hiddenResult
-        }
+            imgaes = Image.query.filter_by(job_id=job_id).all()
+            random_image = random.choice(imgaes).name
 
-        return jsonify(response_data)
+            try:
+                response = openai.ChatCompletion.create(
+                    model="gpt-3.5-turbo",
+                    messages=[
+                        {"role": "system", "content": "You are a helpful assistant."},
+                        {"role": "user", "content": generate_prompt(job_name)}
+                    ],
+                )
+                result = response['choices'][0]['message']['content']
+
+                user.generated_text = result
+                user.generated_image = random_image
+                db.session.commit()
+
+                return jsonify({"message": "Generated text and saved successfully."}), 200
+            except Exception as e:
+                return jsonify({"error": f"Error generating text: {str(e)}"}), 500
+        else:
+            return jsonify({'error': 'Job not found.'})
     else:
-        return jsonify({'error': 'Job not found.'})
+        return jsonify({'error': 'User not found.'})
 
 def generate_prompt(job_name):
     prompt = """A. {0}의 성향과 꿈에 관한 3문단의 하이쿠를 적어 주세요.
@@ -206,7 +233,7 @@ def generate_prompt(job_name):
 # - 음절에 관한 문구는 제거.
 # - 신비로운 말투로 작성.
 # - 제목 제거.
-# B. {0}입사할 수 있을만한 부서를 추천하고 예상 연봉을 달러로 적어 주세요.
+# B. {0}가 입사할 수 있을만한 부서를 추천하고 예상 연봉을 달러로 적어 주세요.
 # [조건]
 # - 에세이 스타일로 작성.
 # - 귀여운 말투로 작성.
@@ -214,6 +241,77 @@ def generate_prompt(job_name):
     return prompt
 
 
+
+
+
+# return result
+@app.route('/result', methods=['GET'])
+def get_normal_result():
+    
+    userId = request.args.get('userId')
+
+    user = User.query.filter_by(userId=userId).first()
+
+    if user:
+        generated_text = user.generated_text
+
+        if generated_text:
+            job_id = user.selected_job_id
+            job = Job.query.filter_by(id=job_id).first()
+
+            if job:
+                job_name = job.name
+
+                normal_result = {
+                    "jobId": job_id,
+                    "jobName": job_name,
+                    "generatedText": generated_text
+                }
+
+                return jsonify({"normalResult": normal_result}), 200
+            else:
+                return jsonify({"error": "Job not found."}), 404
+        else:
+            return jsonify({"error": "No data."}), 404
+    else:
+        return jsonify({"error": "User not found."}), 404  
+
+
+
+
+# return hidden result
+@app.route('/hidden_result', methods=['GET'])
+def get_hidden_result():
+    
+    userId = request.args.get('userId')
+
+    user = User.query.filter_by(userId=userId).first()
+
+    if user:
+        generated_text = user.generated_text
+        generated_image = user.generated_image
+
+        if generated_text and generated_image:
+            job_id = user.selected_job_id
+            job = Job.query.filter_by(id=job_id).first()
+
+            if job:
+                job_name = job.name
+
+                hidden_result = {
+                    "jobId": job_id,
+                    "jobName": job_name,
+                    "generatedText": generated_text,
+                    "generatedImageName": generated_image
+                }
+
+                return jsonify({"hiddenResult": hidden_result}), 200
+            else:
+                return jsonify({"error": "Job not found."}), 404
+        else:
+            return jsonify({"error": "No data."}), 404
+    else:
+        return jsonify({"error": "User not found."}), 404    
 
 
 
