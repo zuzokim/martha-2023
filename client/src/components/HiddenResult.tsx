@@ -1,8 +1,8 @@
 import { css } from "@emotion/react";
 import { introText } from "./constants";
-import { useJobSelectStore, usePathStore } from "./store";
+import { useJobSelectStore } from "./store";
 import { useLocation } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Haemonging from "./Haemonging";
 const { VITE_SOCKET_SERVER_URL, VITE_FLASK_SERVER_URL } = import.meta.env;
 import samplePng from "../../public/assets/svgs/brain6.png";
@@ -172,14 +172,10 @@ const textStyle = () => css`
 export interface HiddenResultProps {}
 const HiddenResult = (props: HiddenResultProps) => {
   const location = useLocation();
-  const { setPath } = usePathStore();
   const { setSelectedJobInfo, selectedJobInfo, setJobList } =
     useJobSelectStore();
 
-  useEffect(() => {
-    setPath(location.pathname);
-  }, [location.pathname, setPath]);
-
+  //TODO: api call
   const haemongDone = true;
 
   const [data, setData] = useState<any>();

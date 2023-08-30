@@ -3,6 +3,7 @@ import playGif from "../../public/assets/svgs/play.gif";
 import { useJobSelectStore } from "./store";
 import { connect } from "socket.io-client";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const rootStyle = css`
   height: calc(var(--1svh, 1vh) * 100);
@@ -154,20 +155,114 @@ const playingGuideTextStyle = css`
   -o-animation-fill-mode: forwards; /* Opera */
 `;
 
+const triggerFoundTextStyle = css`
+  position: absolute;
+  margin: 0;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 17px;
+  color: black;
+  white-space: nowrap;
+  @keyframes fadeinout {
+    0% {
+      opacity: 0;
+    }
+    20% {
+      opacity: 1;
+    }
+    80% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  @-moz-keyframes fadeinout {
+    /* Firefox */
+    0% {
+      opacity: 0;
+    }
+    20% {
+      opacity: 1;
+    }
+    80% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  @-webkit-keyframes fadeinout {
+    /* Safari and Chrome */
+    0% {
+      opacity: 0;
+    }
+    20% {
+      opacity: 1;
+    }
+    80% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  @-o-keyframes fadeinout {
+    /* Opera */
+    0% {
+      opacity: 0;
+    }
+    20% {
+      opacity: 1;
+    }
+    80% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  animation: fadeinout 8s ease-in-out;
+  -moz-animation: fadeinout 8s ease-in-out; /* Firefox */
+  -webkit-animation: fadeinout 8s ease-in-out; /* Safari and Chrome */
+  -o-animation: fadeinout 8s ease-in-out; /* Opera */
+  animation-fill-mode: forwards;
+  -moz-animation-fill-mode: forwards; /* Firefox */
+  -webkit-animation-fill-mode: forwards; /* Safari and Chrome */
+  -o-animation-fill-mode: forwards; /* Opera */
+`;
+
+type PlayStatusData = {
+  userId: string;
+  startTime?: string;
+  endTime?: string;
+  selectedJobId?: number;
+};
+
 export interface PlayingProps {}
 
 const Playing = (props: PlayingProps) => {
   const [playStatus, setPlayStatus] = useState<
-    "Playing" | "Finished" | "Error" | null
+    "Playing" | "Exiting" | "TriggerFound" | "Error" | null
   >(null);
+  const [resultStatus, setResultStatus] = useState<"Normal" | "Hidden" | null>(
+    null
+  );
 
-  const URL = `http://localhost:8000`;
-  const socket = connect(URL, { autoConnect: false });
+  const URL = `http://192.168.0.36:8000`;
+  const socket = connect(URL);
 
   useEffect(() => {
     socket.on("OnPlay", (data) => {
-      // setPlaying(data === "Playing"); //Playing , Finished, Error
       setPlayStatus(data);
+    });
+    socket.on("GameOver", (data) => {
+      setResultStatus(data);
     });
     return () => {
       socket.off("connect");
@@ -177,42 +272,62 @@ const Playing = (props: PlayingProps) => {
   }, [socket]);
 
   const { selectedJobInfo } = useJobSelectStore();
-  const clientUserId = localStorage.getItem("userId");
+  const clientUserId = localStorage.getItem("userId") ?? "";
+
+  async function savePlay(playStatusData: PlayStatusData) {
+    try {
+      const response = await fetch(`http://127.0.0.1:5000/play`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(playStatusData),
+      });
+    } catch (error) {
+      console.log(error);
+      // throw new Error(error.message);
+    }
+  }
 
   useEffect(() => {
-    const playStartingData = {
-      userId: clientUserId,
-      startTime: new Date().toISOString(),
-      selectedJobId: selectedJobInfo.jobId,
-    };
-    const playFinishingData = {
-      userId: clientUserId,
-      endTime: new Date().toISOString(),
-      selectedJobId: selectedJobInfo.jobId,
-    };
-
-    async function savePlay(playStatusData: any) {
-      try {
-        const response = await fetch(`http://127.0.0.1:5000/play`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(playStatusData),
-        });
-      } catch (error) {
-        console.log(error);
-        // throw new Error(error.message);
-      }
-    }
     if (playStatus === "Playing") {
+      const playStartingData = {
+        userId: clientUserId,
+        startTime: new Date().toISOString(),
+        selectedJobId: selectedJobInfo.jobId,
+      };
       savePlay(playStartingData);
-    } else if (playStatus === "Finished") {
-      savePlay(playFinishingData);
     }
   }, [playStatus]);
 
-  //TODO: 숨겨진 트리거를 발견했습니다
+  useEffect(() => {
+    if (resultStatus) {
+      socket.emit("Init", "Init");
+
+      const playFinishingData = {
+        userId: clientUserId,
+        endTime: new Date().toISOString(),
+        // selectedJobId: selectedJobInfo.jobId,
+      };
+      savePlay(playFinishingData);
+    }
+  }, [resultStatus]);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (resultStatus === "Normal") {
+      navigate("/normal-result");
+    } else if (resultStatus === "Hidden") {
+      navigate("/hidden-result");
+    }
+  }, [resultStatus]);
+
+  const triggerFound = playStatus === "TriggerFound";
+
+  console.log(playStatus, "playStatus");
+  console.log(resultStatus, "resultStatus");
+
   return (
     <div css={rootStyle}>
       <div css={gifContainerStyle}>
@@ -222,6 +337,11 @@ const Playing = (props: PlayingProps) => {
           css={playingGifStyle(playStatus === "Playing")}
         />
         <h1 css={playingGuideTextStyle}>사운드에 집중하세요</h1>
+        {triggerFound && (
+          <h1 css={triggerFoundTextStyle}>
+            숨겨진 트리거를 발견했습니다 {playStatus}
+          </h1>
+        )}
       </div>
     </div>
   );

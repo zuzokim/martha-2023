@@ -1,7 +1,7 @@
 import { css } from "@emotion/react";
 import { jobNameList } from "./constants";
 import { useLocation } from "react-router-dom";
-import { useJobSelectStore, usePathStore } from "./store";
+import { useJobSelectStore } from "./store";
 import { useEffect, useState } from "react";
 import Picker from "react-mobile-picker";
 
@@ -56,7 +56,6 @@ const JobSelect = (props: JobSelectProps) => {
   const {} = props;
 
   const location = useLocation();
-  const { setPath } = usePathStore();
   const { setSelectedJobInfo, selectedJobInfo, setJobList } =
     useJobSelectStore();
 
@@ -106,10 +105,6 @@ const JobSelect = (props: JobSelectProps) => {
     };
     getJobList();
   }, []);
-
-  useEffect(() => {
-    setPath(location.pathname);
-  }, [location.pathname, setPath]);
 
   return (
     <div css={containerStyle}>

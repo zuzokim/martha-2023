@@ -32,11 +32,6 @@ io.on("connect", (socket: any) => {
     console.log(`🙈socket disconnected. reason: '${reason}'`);
   });
 
-  // socket.on("message", (message: any) => {
-  //   io.sockets.emit("message", message);
-  //   console.log("message arrived : ", message);
-  // });
-
   socket.on(
     "CreateMap",
     (
@@ -50,7 +45,7 @@ io.on("connect", (socket: any) => {
   socket.on(
     "OnPlay",
     (
-      message: any //Playing | Finished | Error
+      message: any //Playing | Exiting | TriggerFound |  Error
     ) => {
       io.sockets.emit("OnPlay", message);
       console.log("OnPlay : ", message);

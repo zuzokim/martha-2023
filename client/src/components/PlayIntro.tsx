@@ -1,8 +1,7 @@
 import { css } from "@emotion/react";
 import { introText } from "./constants";
-import { usePathStore } from "./store";
 import { useLocation } from "react-router-dom";
-import { useEffect } from "react";
+
 
 const playIntroContainerStyle = () => css`
   height: 60vh;
@@ -48,12 +47,6 @@ const textStyle = () => css`
 export interface PlayIntroProps {}
 const PlayIntro = (props: PlayIntroProps) => {
   const location = useLocation();
-
-  const { setPath } = usePathStore();
-
-  useEffect(() => {
-    setPath(location.pathname);
-  }, [location.pathname, setPath]);
 
   return (
     <div css={playIntroContainerStyle}>
