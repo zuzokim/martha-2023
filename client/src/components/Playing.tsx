@@ -338,9 +338,7 @@ const Playing = (props: PlayingProps) => {
         />
         <h1 css={playingGuideTextStyle}>사운드에 집중하세요</h1>
         {triggerFound && (
-          <h1 css={triggerFoundTextStyle}>
-            숨겨진 트리거를 발견했습니다 {playStatus}
-          </h1>
+          <h1 css={triggerFoundTextStyle}>숨겨진 트리거를 발견했습니다</h1>
         )}
       </div>
     </div>
