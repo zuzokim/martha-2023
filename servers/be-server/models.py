@@ -45,14 +45,14 @@ class User(db.Model):
     def __repr__(self):
         return f"<User {self.id}>"
     
-class LoadingMessage(db.Model):
-    __tablename__ = 'loading_message'
+# class LoadingMessage(db.Model):
+#     __tablename__ = 'loading_message'
 
-    id = db.Column(db.Integer, primary_key=True)
-    message = db.Column(db.String(100))
+#     id = db.Column(db.Integer, primary_key=True)
+#     message = db.Column(db.String(100))
 
-    def __repr__(self):
-        return f"<LoadingMessage {self.message}>"
+#     def __repr__(self):
+#         return f"<LoadingMessage {self.message}>"
 
 
 
@@ -72,11 +72,11 @@ def load_data_from_csv(job_csv_file, loading_message_csv_file):
                 db.session.add(image)
                 job.images.append(image)
     
-    with open(loading_message_csv_file, 'r') as file:
-        csv_data = csv.DictReader(file)
-        for row in csv_data:
-            loading_message = LoadingMessage(message=row['message'])
-            db.session.add(loading_message)
+    # with open(loading_message_csv_file, 'r') as file:
+    #     csv_data = csv.DictReader(file)
+    #     for row in csv_data:
+    #         loading_message = LoadingMessage(message=row['message'])
+    #         db.session.add(loading_message)
 
 
 def commit_session():
@@ -87,6 +87,7 @@ def commit_session():
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
-        load_data_from_csv('/Users/R5Z/Desktop/martha-2023/servers/be-server/joblist.csv',
-                           '/Users/R5Z/Desktop/martha-2023/servers/be-server/loadingmessages.csv') # 로컬 경로로 조정하여 사용
+        load_data_from_csv('/Users/R5Z/Desktop/martha-2023/servers/be-server/joblist.csv') # 로컬 경로로 조정하여 사용
+        # load_data_from_csv('/Users/R5Z/Desktop/martha-2023/servers/be-server/joblist.csv',
+        #                    '/Users/R5Z/Desktop/martha-2023/servers/be-server/loadingmessages.csv') # 로컬 경로로 조정하여 사용
         db.session.commit()

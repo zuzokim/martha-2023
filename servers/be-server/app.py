@@ -1,7 +1,8 @@
 from flask import Flask, jsonify, redirect, render_template, request, url_for, send_from_directory
-from models import db, Job, Image, User, LoadingMessage
+from models import db, Job, Image, User#, LoadingMessage
 from flask_cors import CORS
 from datetime import datetime
+import queue
 import threading
 
 import os
@@ -84,6 +85,9 @@ def play():
     endTime = data.get('endTime')
     selectedJobId = data.get('selectedJobId')
 
+    if not userId:
+        return jsonify({"error": "Bad user input."}), 400
+
     user = User.query.filter_by(userId=userId).first()
 
     if user is None:
@@ -114,7 +118,7 @@ def play():
 
 
 # ChatGPT - generate
-processed_requests = {}
+processed_requests = set()
 lock = threading.Lock()
 
 @app.route('/waitfor_result', methods=['GET'])
@@ -124,9 +128,9 @@ def gpt_normal():
 
     with lock:
         if userId in processed_requests:
-            return jsonify({"message": "Duplicate request. Ignored"}), 400
+            return '', 204
         
-        processed_requests[userId] = True
+        processed_requests.add(userId)
 
     userId = request.args.get('userId')
 
@@ -152,7 +156,7 @@ def gpt_normal():
                 user.generated_text = result
                 db.session.commit()
 
-                return jsonify({"message": "Generated text and saved successfully."}), 200
+                return jsonify({"message": "Generated text and image, saved successfully."}), 200
             except Exception as e:
                 return jsonify({"error": f"Error generating text: {str(e)}"}), 500
         else:
@@ -177,7 +181,7 @@ def generate_prompt(job_name):
 
 
 # ChatGPT - generate hidden
-processed_requests = {}
+processed_requests = set()
 lock = threading.Lock()
 
 @app.route('/waitfor_hidden_result', methods=['GET'])
@@ -187,9 +191,9 @@ def gpt_hidden():
 
     with lock:
         if userId in processed_requests:
-            return jsonify({"message": "Duplicate request. Ignored"}), 400
+            return '', 204
         
-        processed_requests[userId] = True
+        processed_requests.add(userId)
 
     userId = request.args.get('userId')
 
@@ -219,7 +223,7 @@ def gpt_hidden():
                 user.generated_image = random_image
                 db.session.commit()
 
-                return jsonify({"message": "Generated text and saved successfully."}), 200
+                return jsonify({"message": "Generated text and image, saved successfully."}), 200
             except Exception as e:
                 return jsonify({"error": f"Error generating text: {str(e)}"}), 500
         else:
@@ -318,4 +322,5 @@ def get_hidden_result():
 
 
 if __name__ == '__main__':
-    app.run(host='localhost', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True) # python app.py or flask --app app --debug run --host=0.0.0.0 --port=5000
+    # app.run(host='localhost', port=5000, debug=True)
