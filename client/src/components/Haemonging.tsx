@@ -1,12 +1,11 @@
 import { css } from "@emotion/react";
 import HaemongingGif from "../../public/assets/svgs/haemonging.gif";
 import { generateRandomIndex, haemongingText } from "./constants";
-
+import { useEffect, useState } from "react";
 
 const rootStyle = (haemongDone: boolean) => css`
   height: calc(var(--1svh, 1vh) * 100);
   height: 100svh;
-  background-color: pink;
   position: absolute;
   top: 0;
   width: 100%;
@@ -99,7 +98,21 @@ const haemongingTextStyle = css`
   text-align: center;
   word-break: keep-all;
   width: 300px;
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing 3.5s infinite;
+  animation-timing-function: steps(20, end);
+  /* The typing effect */
+  @keyframes typing {
+    from {
+      width: 0%;
+    }
+    to {
+      width: 100%;
+    }
+  }
 `;
+
 
 export interface HaemongingProps {
   haemongDone: boolean;
@@ -107,10 +120,22 @@ export interface HaemongingProps {
 
 const Haemonging = (props: HaemongingProps) => {
   const { haemongDone, ...others } = props;
+  const [currentIndex, setCurrentIndex] = useState<number>(
+    generateRandomIndex()
+  );
+
+  useEffect(() => {
+    function updateRandomIndex() {
+      setCurrentIndex(generateRandomIndex());
+    }
+    const interval = setInterval(updateRandomIndex, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div
-      css={rootStyle(haemongDone)}
+      css={rootStyle(false)}
       {...others}
       id="haemonging"
       data-html2canvas-ignore="true"
@@ -119,7 +144,9 @@ const Haemonging = (props: HaemongingProps) => {
         <img src={HaemongingGif} alt="haemonging" css={haemongingGifStyle} />
       </div>
       <div css={heamongingTextWrapperStyle}>
-        <p css={haemongingTextStyle}>{haemongingText[generateRandomIndex()]}</p>
+        <p css={haemongingTextStyle}>
+          {haemongingText[currentIndex]}
+        </p>
       </div>
     </div>
   );
