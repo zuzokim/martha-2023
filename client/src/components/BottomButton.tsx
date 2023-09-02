@@ -81,11 +81,18 @@ const BottomButton = (props: BottomButtonProps) => {
   const navigate = useNavigate();
 
   const [showLogoTransition, setShowLogTransition] = useState(false);
+
   const handlePrevClick = () => {
     if (prevPath) {
-      navigate(prevPath);
       if (prevPath === "/") {
+        setShowLogTransition(true);
+        setTimeout(() => {
+          navigate("/");
+        }, 1000);
+        //logo transition중에는 다른 인터랙션을 방지해야하므로 clearTimeout하지 않음
         localStorage.removeItem("userId");
+      } else {
+        navigate(prevPath);
       }
     }
   };
@@ -173,6 +180,18 @@ const BottomButton = (props: BottomButtonProps) => {
   useEffect(() => {
     if (!clientUserId) localStorage.setItem("userId", nanoid());
   }, [clientUserId]);
+
+  //need to not render transparent LogoTransition when finally came back to root path
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (pathname === "/") {
+        setShowLogTransition(false);
+      }
+    }, 2500);
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [pathname]);
 
   return (
     <>
