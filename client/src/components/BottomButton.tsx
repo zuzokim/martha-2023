@@ -12,6 +12,7 @@ import { useJobSelectStore } from "./store";
 import { connect } from "socket.io-client";
 import { nanoid } from "nanoid";
 import { useEffect } from "react";
+import LogoTransition from "./LogoTransition";
 
 const headerTextStyle = css`
   font-family: var(--martha-font-arita-dotum-medium);
@@ -79,6 +80,7 @@ const BottomButton = (props: BottomButtonProps) => {
 
   const navigate = useNavigate();
 
+  const [showLogoTransition, setShowLogTransition] = useState(false);
   const handlePrevClick = () => {
     if (prevPath) {
       navigate(prevPath);
@@ -173,82 +175,85 @@ const BottomButton = (props: BottomButtonProps) => {
   }, [clientUserId]);
 
   return (
-    <div
-      data-html2canvas-ignore="true"
-      css={css`
-        display: ${disablePathChange ? "none" : "flex"};
-        justify-content: center;
-        align-items: center;
-        position: relative;
-        min-height: 46px;
-        &:hover {
-          cursor: pointer;
-        }
-      `}
-    >
-      {leftSrc && (
-        <SvgComponent
-          role="button"
-          aria-label="prevButton"
-          src={leftSrc}
-          css={css`
-            display: flex;
-            justify-content: center;
+    <>
+      <div
+        data-html2canvas-ignore="true"
+        css={css`
+          display: ${disablePathChange ? "none" : "flex"};
+          justify-content: center;
+          align-items: center;
+          position: relative;
+          min-height: 46px;
+          &:hover {
+            cursor: pointer;
+          }
+        `}
+      >
+        {leftSrc && (
+          <SvgComponent
+            role="button"
+            aria-label="prevButton"
+            src={leftSrc}
+            css={css`
+              display: flex;
+              justify-content: center;
 
-            width: ${showChangePathButtons ? "14px" : "50%"};
-            height: ${showChangePathButtons ? "24px" : "none"};
-            ${isResult &&
-            css`
-              width: 113px;
-              height: auto;
+              width: ${showChangePathButtons ? "14px" : "50%"};
+              height: ${showChangePathButtons ? "24px" : "none"};
+              ${isResult &&
+              css`
+                width: 113px;
+                height: auto;
+              `}
+              display: block;
+              &:active {
+                opacity: 0.7;
+              }
             `}
-            display: block;
-            &:active {
-              opacity: 0.7;
-            }
-          `}
-          alt="prevButton"
-          onClick={handlePrevClick}
-          {...others}
-        />
-      )}
-      {rightSrc && (
-        <SvgComponent
-          role="button"
-          aria-label="nextButton"
-          src={rightSrc}
-          css={css`
-            display: flex;
-            justify-content: center;
-            width: ${showChangePathButtons ? "14px" : "50%"};
-            height: ${showChangePathButtons ? "24px" : "none"};
-            ${isResult &&
-            css`
-              width: 113px;
-              height: auto;
+            alt="prevButton"
+            onClick={handlePrevClick}
+            {...others}
+          />
+        )}
+        {rightSrc && (
+          <SvgComponent
+            role="button"
+            aria-label="nextButton"
+            src={rightSrc}
+            css={css`
+              display: flex;
+              justify-content: center;
+              width: ${showChangePathButtons ? "14px" : "50%"};
+              height: ${showChangePathButtons ? "24px" : "none"};
+              ${isResult &&
+              css`
+                width: 113px;
+                height: auto;
+              `}
+              display: block;
+              margin-left: 24px;
+              &:active {
+                opacity: 0.7;
+              }
             `}
-            display: block;
-            margin-left: 16px;
-            &:active {
-              opacity: 0.7;
-            }
-          `}
-          alt="nextButton"
-          onClick={() => {
-            if (jobSelected) {
-              handleSelect();
-              handleNextClick();
-            } else if (isResult) {
-              handleCapture();
-            } else {
-              handleNextClick();
-            }
-          }}
-          {...others}
-        />
-      )}
-      {instructionText && <h1 css={headerTextStyle}>{instructionText}</h1>}
-    </div>
+            alt="nextButton"
+            onClick={() => {
+              if (jobSelected) {
+                handleSelect();
+                handleNextClick();
+              } else if (isResult) {
+                handleCapture();
+              } else {
+                handleNextClick();
+              }
+            }}
+            {...others}
+          />
+        )}
+        {instructionText && <h1 css={headerTextStyle}>{instructionText}</h1>}
+      </div>
+      {showLogoTransition && <LogoTransition />}
+    </>
   );
 };
 
