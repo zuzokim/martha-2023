@@ -53,28 +53,29 @@ def get_jobs():
 
 
 # 특정 직업 선택
-@app.route('/job_list/<int:job_id>', methods=['GET'])
+@app.route('/job_list/<int:job_id>', methods=['POST'])
 def get_job(job_id):
-    job = Job.query.get(job_id)
+    data = request.json
+    userId = data.get('userId')
 
-    if job is None:
-        return jsonify({'message': 'Job not found.'}), 404
+    if not userId:
+        return jsonify({"error": "Bad user input."}), 400
     
-    selectedJob = {
-        'jobId': job.id,
-        'jobName': job.name,
-        'jobType': job.type,
-    }
+    user = User.query.filter_by(userId=userId).first()
 
-    response_data = {
-        'selectedJob': selectedJob
-    }
+    if user is None:
+        user = User(userId=userId)
+    
+    user.selected_job_id = job_id
 
-    return jsonify(response_data)
+    db.session.add(user)
+    db.session.commit()
+
+    return jsonify({"message": "User created and job selected successfully."}), 200
 
 
 
-# user 생성, play start-end time 저장
+# play start-end time 저장
 @app.route('/play', methods=['POST', 'PUT'])
 def play():
     data = request.json
@@ -85,10 +86,10 @@ def play():
 
     user = User.query.filter_by(userId=userId).first()
 
-    if request.method == 'POST':
-        if user is None:
-            user = User(userId=userId)
-        
+    if user is None:
+        return jsonify({"error": "User not found."}), 400
+
+    if request.method == 'POST':        
         startTime = data.get('startTime')
         selectedJobId = data.get('selectedJobId')
 
@@ -104,18 +105,15 @@ def play():
                 user.selected_job_id = job.id
 
     elif request.method == 'PUT':
-        if user is not None:
-            endTime = data.get('endTime')
-            
-            if endTime:
-                endTime_iso = endTime
-                end_time = datetime.fromisoformat(endTime_iso)
-                user.play_end_time = end_time
+        endTime = data.get('endTime')
+        if endTime:
+            endTime_iso = endTime
+            end_time = datetime.fromisoformat(endTime_iso)
+            user.play_end_time = end_time
 
-    db.session.add(user)
     db.session.commit()
 
-    return jsonify({"message": "Request processed successfully."}), 200
+    return jsonify({"message": "User updated successfully."}), 200
 
 
 
