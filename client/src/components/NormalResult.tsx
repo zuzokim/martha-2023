@@ -2,6 +2,7 @@ import { css } from "@emotion/react";
 import { introText } from "./constants";
 import { useLocation } from "react-router-dom";
 import Haemonging from "./Haemonging";
+import { useEffect, useState } from "react";
 
 const normalResultContainerStyle = () => css`
   height: 60vh;
@@ -46,16 +47,53 @@ const textStyle = () => css`
 
 export interface NormalResultProps {}
 const NormalResult = (props: NormalResultProps) => {
-  const location = useLocation();
+  const userId = localStorage.getItem("userId");
+  const [resultData, setResultData] = useState<any | null>(null);
+  const [haemongDone, setHaemongDone] = useState(false);
 
-  const haemongDone = true;
-  //TODO: api call
+  async function getNormalResult() {
+    try {
+      const waitForHaemonging = await fetch(
+        `http://192.168.0.36:5000/waitfor_result?userId=${userId}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      console.log(waitForHaemonging, "waitForHaemonging");
+      const waitForResult = await waitForHaemonging.json();
+
+      setHaemongDone(Boolean(waitForResult));
+
+      if (Boolean(waitForHaemonging)) {
+        const response = await fetch(
+          `http://192.168.0.36:5000/result?userId=${userId}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        const jsonData = await response.json();
+
+        setResultData(jsonData);
+      }
+    } catch (error) {
+      console.log("Error fetching result:", error);
+    }
+  }
+
+  useEffect(() => {
+    getNormalResult();
+  }, []);
 
   return (
     <div>
       <div css={normalResultContainerStyle} id="normal-result-container">
         <div css={textContainerStyle}>
-          <p css={textStyle}>{introText}</p>
+          <p css={textStyle}>{resultData?.normalResult?.generatedText}</p>
         </div>
       </div>
       <Haemonging haemongDone={haemongDone} />

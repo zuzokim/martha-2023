@@ -2,7 +2,7 @@ import { css } from "@emotion/react";
 import { introText } from "./constants";
 import { useJobSelectStore } from "./store";
 import { useLocation } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Haemonging from "./Haemonging";
 const { VITE_SOCKET_SERVER_URL, VITE_FLASK_SERVER_URL } = import.meta.env;
 import samplePng from "../../public/assets/svgs/brain6.png";
@@ -171,28 +171,61 @@ const textStyle = () => css`
 
 export interface HiddenResultProps {}
 const HiddenResult = (props: HiddenResultProps) => {
-  const location = useLocation();
-  const { setSelectedJobInfo, selectedJobInfo, setJobList } =
-    useJobSelectStore();
+  const userId = localStorage.getItem("userId");
+  const [resultData, setResultData] = useState<any | null>(null);
+  const [haemongDone, setHaemongDone] = useState(false);
+  const [src, setSrc] = useState<string | null>(null);
 
-  //TODO: api call
-  const haemongDone = true;
-
-  const [data, setData] = useState<any>();
-
-  const getJobList = async () => {
+  async function getHiddenResult() {
     try {
-      const response = await fetch(
-        `${VITE_FLASK_SERVER_URL}/hidden_result?jobId=${selectedJobInfo.jobId}`
+      const waitForHaemonging = await fetch(
+        `http://192.168.0.36:5000/waitfor_hidden_result?userId=${userId}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
       );
-      const jsonData = await response.json();
-      setData(jsonData);
-      // setSelectedJobInfo(jsonData.jobList[13].jobName);
+
+      const waitForResult = await waitForHaemonging.json();
+
+      setHaemongDone(Boolean(waitForResult));
+
+      if (Boolean(waitForHaemonging)) {
+        const response = await fetch(
+          `http://192.168.0.36:5000/hidden_result?userId=${userId}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        const jsonData = await response.json();
+
+        setResultData(jsonData);
+      }
     } catch (error) {
       console.log("Error fetching result:", error);
     }
-  };
-  getJobList();
+  }
+
+  useEffect(() => {
+    getHiddenResult();
+  }, []);
+
+  const imageName = resultData?.hiddenResult.generatedImageName;
+
+  useEffect(() => {
+    if (imageName && typeof imageName === "string") {
+      // Assuming imagePath is a valid string path to the image
+      const image = new Image();
+      image.src = `${VITE_FLASK_SERVER_URL}/static/${resultData?.hiddenResult.generatedImageName}`;
+      const imagePath = `${VITE_FLASK_SERVER_URL}/static/${resultData?.hiddenResult.generatedImageName}`;
+      image.onload = () => {
+        setSrc(imagePath);
+      };
+    }
+  }, [imageName]);
 
   return (
     <>
@@ -261,7 +294,7 @@ const HiddenResult = (props: HiddenResultProps) => {
         </div>
         <div css={textContainerGradientStyle} data-html2canvas-ignore="true" />
         <div css={textContainerStyle} id="text-container">
-          <p css={textStyle}>{introText}</p>
+          <p css={textStyle}>{resultData?.hiddenResult?.generatedText}</p>
         </div>
         <Haemonging haemongDone={haemongDone} />
       </div>

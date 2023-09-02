@@ -279,10 +279,13 @@ const Playing = (props: PlayingProps) => {
   const { selectedJobInfo } = useJobSelectStore();
   const clientUserId = localStorage.getItem("userId") ?? "";
 
-  async function savePlay(playStatusData: PlayStatusData) {
+  async function savePlay(
+    playStatusData: PlayStatusData,
+    status: "play" | "end"
+  ) {
     try {
-      const response = await fetch(`http://127.0.0.1:5000/play`, {
-        method: "POST",
+      const response = await fetch(`http://192.168.0.36:5000/play`, {
+        method: status === "play" ? "POST" : "PUT",
         headers: {
           "Content-Type": "application/json",
         },

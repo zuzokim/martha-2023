@@ -78,7 +78,6 @@ const JobSelect = (props: JobSelectProps) => {
         selectedJob: value,
       };
     });
-    console.log(value);
     setSelectedJobInfo(value);
     // Check if the `vibrate` function is available (ios not supported)
     if ("vibrate" in window.navigator) {
@@ -93,12 +92,13 @@ const JobSelect = (props: JobSelectProps) => {
   }, []);
 
   useEffect(() => {
+    const clientUserId = localStorage.getItem("userId") ?? "";
     const getJobList = async () => {
       try {
-        const response = await fetch("http://127.0.0.1:5000/job_list");
+        const response = await fetch("http://192.168.0.36:5000/job_list");
         const jsonData = await response.json();
-        setJobList(jsonData);
-        setSelectedJobInfo(jsonData[13].jobName);
+        setJobList(jsonData.jobList);
+        setSelectedJobInfo(jsonData[13]?.jobName);
       } catch (error) {
         console.log("Error fetching jobList:", error);
       }

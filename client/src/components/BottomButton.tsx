@@ -100,6 +100,22 @@ const BottomButton = (props: BottomButtonProps) => {
     const URL = `http://192.168.0.36:8000`;
     const socket = connect(URL);
     socket.emit("CreateMap", `${selectedJobInfo?.jobType}`);
+    try {
+      console.log(selectedJobInfo.jobId, clientUserId, "here");
+      const response = await fetch(
+        `http://192.168.0.36:5000/job_list/${selectedJobInfo.jobId}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userId: clientUserId }),
+        }
+      );
+    } catch (error) {
+      console.log(error);
+      // throw new Error(error.message);
+    }
   };
 
   const handleCapture = () => {
@@ -151,7 +167,7 @@ const BottomButton = (props: BottomButtonProps) => {
   const clientUserId = localStorage.getItem("userId");
   useEffect(() => {
     if (!clientUserId) localStorage.setItem("userId", nanoid());
-  }, []);
+  }, [clientUserId]);
 
   return (
     <div

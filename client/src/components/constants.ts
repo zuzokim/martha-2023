@@ -51,7 +51,7 @@ export type JobInfo = {
   jobId: number;
   jobName: string;
   jobType: JobType;
-  generatedImageNames?: string[];
+  // generatedImageNames?: string[];
 };
 
 export const jobNameList = [
