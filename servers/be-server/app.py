@@ -10,7 +10,7 @@ import random
 import openai
 
 app = Flask(__name__, static_folder='static')
-CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True, methods=["GET", "POST"])
+CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True, methods=["GET", "POST", "PUT"])
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///martha.db'
 db.init_app(app)
 
@@ -77,20 +77,20 @@ def get_job(job_id):
 # user 생성, play start-end time 저장
 @app.route('/play', methods=['POST', 'PUT'])
 def play():
+    data = request.json
+    userId = data.get('userId')
+
+    if not userId:
+        return jsonify({"error": "Bad user input."}), 400
+
+    user = User.query.filter_by(userId=userId).first()
+
     if request.method == 'POST':
-
-        data = request.json
-        userId = data.get('userId')
-        startTime = data.get('startTime')
-        selectedJobId = data.get('selectedJobId')
-
-        if not userId:
-            return jsonify({"error": "Bad user input."}), 400
-
-        user = User.query.filter_by(userId=userId).first()
-
         if user is None:
             user = User(userId=userId)
+        
+        startTime = data.get('startTime')
+        selectedJobId = data.get('selectedJobId')
 
         if startTime:
             startTime_iso = startTime
@@ -104,17 +104,9 @@ def play():
                 user.selected_job_id = job.id
 
     elif request.method == 'PUT':
-
-        data = request.json
-        userId = data.get('userId')
-        endTime = data.get('endTime')
-
-        if not userId:
-            return jsonify({"error": "Bad user input."}), 400
-
-        user = User.query.filter_by(userId=userId).first()
-
         if user is not None:
+            endTime = data.get('endTime')
+            
             if endTime:
                 endTime_iso = endTime
                 end_time = datetime.fromisoformat(endTime_iso)
