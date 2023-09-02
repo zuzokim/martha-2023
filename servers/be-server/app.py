@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, redirect, render_template, request, url_for, send_from_directory
+from flask import Flask, jsonify, redirect, render_template, request, url_for, send_from_directory, Response
 from models import db, Job, Image, User#, LoadingMessage
 from flask_cors import CORS
 from datetime import datetime
@@ -75,44 +75,96 @@ def get_job(job_id):
 
 
 # user 생성, play start-end time 저장
-@app.route('/play', methods=['POST'])
+@app.route('/play', methods=['POST', 'PUT'])
 def play():
+    if request.method == 'POST':
 
-    data = request.json
+        data = request.json
+        userId = data.get('userId')
+        startTime = data.get('startTime')
+        selectedJobId = data.get('selectedJobId')
 
-    userId = data.get('userId')
-    startTime = data.get('startTime')
-    endTime = data.get('endTime')
-    selectedJobId = data.get('selectedJobId')
+        if not userId:
+            return jsonify({"error": "Bad user input."}), 400
 
-    if not userId:
-        return jsonify({"error": "Bad user input."}), 400
+        user = User.query.filter_by(userId=userId).first()
 
-    user = User.query.filter_by(userId=userId).first()
+        if user is None:
+            user = User(userId=userId)
 
-    if user is None:
-        user = User(userId=userId)
+        if startTime:
+            startTime_iso = startTime
+            start_time = datetime.fromisoformat(startTime_iso)
+            if user.play_start_time is None or start_time < user.play_start_time:
+                user.play_start_time = start_time
 
-    if startTime:
-        startTime_iso = startTime[:-1]
-        start_time = datetime.fromisoformat(startTime_iso)
-        if user.play_start_time is None or start_time < user.play_start_time:
-            user.play_start_time = start_time
+        if selectedJobId:
+            job = Job.query.get(selectedJobId)
+            if job is not None:
+                user.selected_job_id = job.id
 
-    if endTime:
-        endTime_iso = endTime[:-1]
-        end_time = datetime.fromisoformat(endTime_iso)
-        user.play_end_time = end_time
-    
-    if selectedJobId:
-        job = Job.query.get(selectedJobId)
-        if job is not None:
-            user.selected_job_id = job.id
+    elif request.method == 'PUT':
+
+        data = request.json
+        userId = data.get('userId')
+        endTime = data.get('endTime')
+
+        if not userId:
+            return jsonify({"error": "Bad user input."}), 400
+
+        user = User.query.filter_by(userId=userId).first()
+
+        if user is not None:
+            if endTime:
+                endTime_iso = endTime
+                end_time = datetime.fromisoformat(endTime_iso)
+                user.play_end_time = end_time
 
     db.session.add(user)
     db.session.commit()
 
-    return jsonify({"message": "Play time recorded successfully"}), 200
+    return jsonify({"message": "Request processed successfully."}), 200
+
+
+
+# @app.route('/play', methods=['POST'])
+# def play():
+
+#     data = request.json
+
+#     userId = data.get('userId')
+#     startTime = data.get('startTime')
+#     endTime = data.get('endTime')
+#     selectedJobId = data.get('selectedJobId')
+
+#     if not userId:
+#         return jsonify({"error": "Bad user input."}), 400
+
+#     user = User.query.filter_by(userId=userId).first()
+
+#     if user is None:
+#         user = User(userId=userId)
+
+#     if startTime:
+#         startTime_iso = startTime[:-1]
+#         start_time = datetime.fromisoformat(startTime_iso)
+#         if user.play_start_time is None or start_time < user.play_start_time:
+#             user.play_start_time = start_time
+
+#     if endTime:
+#         endTime_iso = endTime[:-1]
+#         end_time = datetime.fromisoformat(endTime_iso)
+#         user.play_end_time = end_time
+    
+#     if selectedJobId:
+#         job = Job.query.get(selectedJobId)
+#         if job is not None:
+#             user.selected_job_id = job.id
+
+#     db.session.add(user)
+#     db.session.commit()
+
+#     return jsonify({"message": "Play time recorded successfully"}), 200
 
     
 
@@ -181,21 +233,26 @@ def generate_prompt(job_name):
 
 
 # ChatGPT - generate hidden
-processed_requests = set()
-lock = threading.Lock()
-
+#processed_requests = set()
+#lock = threading.Lock()
+processed_requests = {}
 @app.route('/waitfor_hidden_result', methods=['GET'])
 def gpt_hidden():
 
     userId = request.args.get('userId')
 
-    with lock:
-        if userId in processed_requests:
-            return '', 204
-        
-        processed_requests.add(userId)
+    if userId in processed_requests:
+        return Response(status=204)
+    
+    processed_requests[userId] = True
 
-    userId = request.args.get('userId')
+    # with lock:
+    #     if userId in processed_requests:
+    #         return
+        
+    #     processed_requests.add(userId)
+
+    # userId = request.args.get('userId')
 
     user = User.query.filter_by(userId=userId).first()
 
