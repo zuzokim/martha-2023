@@ -29,9 +29,12 @@ const jobSelectContainerStyle = () => css`
   .picker-highlight::before,
   .picker-highlight::after {
     background-color: transparent;
+    height: 0;
   }
   .picker-container {
     .picker-inner {
+      -webkit-mask-box-image: unset;
+      z-index: 0;
       .picker-column {
         .picker-scroller {
           .picker-item {
@@ -43,7 +46,7 @@ const jobSelectContainerStyle = () => css`
             color: white !important;
             font-size: 18px;
             -webkit-text-stroke-width: 0.3px;
-            -webkit-text-stroke-color: white;
+            -webkit-text-stroke-color: var(--martha-secondary-bg-color);
           }
         }
       }
@@ -110,7 +113,7 @@ const JobSelect = (props: JobSelectProps) => {
     <div css={containerStyle}>
       <div css={jobSelectContainerStyle}>
         <Picker
-          // wheel="natural"
+          wheel="off"
           optionGroups={jobOptionsDict}
           valueGroups={selectedJobDict}
           onChange={handleChange}

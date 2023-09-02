@@ -1,11 +1,7 @@
 import { css } from "@emotion/react";
-import { introText } from "./constants";
-import { useJobSelectStore } from "./store";
-import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Haemonging from "./Haemonging";
 const { VITE_SOCKET_SERVER_URL, VITE_FLASK_SERVER_URL } = import.meta.env;
-import samplePng from "../../public/assets/svgs/brain6.png";
 import GradientPng from "../../public/assets/svgs/gradient.png";
 
 const gradientStyle = css`
@@ -252,8 +248,8 @@ const HiddenResult = (props: HiddenResultProps) => {
           >
             <g filter="url(#filter0_f_394_268)">
               <path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
+                fillRule="evenodd"
+                clipRule="evenodd"
                 d="M169.5 361C254.828 361 324 283.545 324 188C324 92.4547 254.828 15 169.5 15C84.172 15 15 92.4547 15 188C15 283.545 84.172 361 169.5 361ZM169.5 350C248.753 350 313 279.037 313 191.5C313 103.963 248.753 33 169.5 33C90.2471 33 26 103.963 26 191.5C26 279.037 90.2471 350 169.5 350Z"
                 fill="#CC0503"
               />
@@ -266,9 +262,9 @@ const HiddenResult = (props: HiddenResultProps) => {
                 width="339"
                 height="376"
                 filterUnits="userSpaceOnUse"
-                color-interpolation-filters="sRGB"
+                colorInterpolationFilters="sRGB"
               >
-                <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                <feFlood floodOpacity="0" result="BackgroundImageFix" />
                 <feBlend
                   mode="normal"
                   in="SourceGraphic"

@@ -11,7 +11,8 @@ import html2canvas from "html2canvas";
 import { useJobSelectStore } from "./store";
 import { connect } from "socket.io-client";
 import { nanoid } from "nanoid";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import LogoTransition from "./LogoTransition";
 
 const headerTextStyle = css`
   font-family: var(--martha-font-arita-dotum-medium);
@@ -79,11 +80,19 @@ const BottomButton = (props: BottomButtonProps) => {
 
   const navigate = useNavigate();
 
+  const [showLogoTransition, setShowLogTransition] = useState(false);
+
   const handlePrevClick = () => {
     if (prevPath) {
-      navigate(prevPath);
       if (prevPath === "/") {
+        setShowLogTransition(true);
+        setTimeout(() => {
+          navigate("/");
+        }, 1000);
+        //logo transition중에는 다른 인터랙션을 방지해야하므로 clearTimeout하지 않음
         localStorage.removeItem("userId");
+      } else {
+        navigate(prevPath);
       }
     }
   };
@@ -101,7 +110,6 @@ const BottomButton = (props: BottomButtonProps) => {
     const socket = connect(URL);
     socket.emit("CreateMap", `${selectedJobInfo?.jobType}`);
     try {
-      console.log(selectedJobInfo.jobId, clientUserId, "here");
       const response = await fetch(
         `http://192.168.0.36:5000/job_list/${selectedJobInfo.jobId}`,
         {
@@ -120,7 +128,7 @@ const BottomButton = (props: BottomButtonProps) => {
 
   const handleCapture = () => {
     const onSaveAs = (uri: string, filename: string) => {
-      console.log("save");
+      localStorage.setItem("capturedOnce", `Martha_2023_${clientUserId}.png`);
       let link = document.createElement("a");
       document.body.appendChild(link);
       link.href = uri;
@@ -168,87 +176,103 @@ const BottomButton = (props: BottomButtonProps) => {
   const jobSelected = pathname === "/jobselect";
 
   const clientUserId = localStorage.getItem("userId");
+  const capturedOnce = localStorage.getItem("capturedOnce");
   useEffect(() => {
     if (!clientUserId) localStorage.setItem("userId", nanoid());
   }, [clientUserId]);
 
-  return (
-    <div
-      data-html2canvas-ignore="true"
-      css={css`
-        display: ${disablePathChange ? "none" : "flex"};
-        justify-content: center;
-        align-items: center;
-        position: relative;
-        min-height: 46px;
-        &:hover {
-          cursor: pointer;
-        }
-      `}
-    >
-      {leftSrc && (
-        <SvgComponent
-          role="button"
-          aria-label="prevButton"
-          src={leftSrc}
-          css={css`
-            display: flex;
-            justify-content: center;
+  //need to not render transparent LogoTransition when finally came back to root path
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (pathname === "/") {
+        setShowLogTransition(false);
+      }
+    }, 2500);
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [pathname]);
 
-            width: ${showChangePathButtons ? "14px" : "50%"};
-            height: ${showChangePathButtons ? "24px" : "none"};
-            ${isResult &&
-            css`
-              width: 113px;
-              height: auto;
+  return (
+    <>
+      <div
+        data-html2canvas-ignore="true"
+        css={css`
+          display: ${disablePathChange ? "none" : "flex"};
+          justify-content: center;
+          align-items: center;
+          position: relative;
+          min-height: 46px;
+          &:hover {
+            cursor: pointer;
+          }
+        `}
+      >
+        {leftSrc && (
+          <SvgComponent
+            role="button"
+            aria-label="prevButton"
+            src={leftSrc}
+            css={css`
+              display: flex;
+              justify-content: center;
+
+              width: ${showChangePathButtons ? "14px" : "50%"};
+              height: ${showChangePathButtons ? "24px" : "none"};
+              ${isResult &&
+              css`
+                width: 113px;
+                height: auto;
+              `}
+              display: block;
+              &:active {
+                opacity: 0.7;
+              }
             `}
-            display: block;
-            &:active {
-              opacity: 0.7;
-            }
-          `}
-          alt="prevButton"
-          onClick={handlePrevClick}
-          {...others}
-        />
-      )}
-      {rightSrc && (
-        <SvgComponent
-          role="button"
-          aria-label="nextButton"
-          src={rightSrc}
-          css={css`
-            display: flex;
-            justify-content: center;
-            width: ${showChangePathButtons ? "14px" : "50%"};
-            height: ${showChangePathButtons ? "24px" : "none"};
-            ${isResult &&
-            css`
-              width: 113px;
-              height: auto;
+            alt="prevButton"
+            onClick={handlePrevClick}
+            {...others}
+          />
+        )}
+        {rightSrc && (
+          <SvgComponent
+            role="button"
+            aria-label="nextButton"
+            src={rightSrc}
+            css={css`
+              display: flex;
+              justify-content: center;
+              width: ${showChangePathButtons ? "14px" : "50%"};
+              height: ${showChangePathButtons ? "24px" : "none"};
+              ${isResult &&
+              css`
+                width: 113px;
+                height: auto;
+              `}
+              display: block;
+              margin-left: 24px;
+              &:active {
+                opacity: 0.7;
+              }
             `}
-            display: block;
-            margin-left: 16px;
-            &:active {
-              opacity: 0.7;
-            }
-          `}
-          alt="nextButton"
-          onClick={() => {
-            if (jobSelected) {
-              handleSelect();
-              handleNextClick();
-            } else if (isResult) {
-              handleCapture();
-            } else {
-              handleNextClick();
-            }
-          }}
-          {...others}
-        />
-      )}
-      {instructionText && <h1 css={headerTextStyle}>{instructionText}</h1>}
-    </div>
+            alt="nextButton"
+            onClick={() => {
+              if (jobSelected) {
+                handleSelect();
+                handleNextClick();
+              } else if (isResult) {
+                handleCapture();
+              } else {
+                handleNextClick();
+              }
+            }}
+            {...others}
+          />
+        )}
+        {instructionText && <h1 css={headerTextStyle}>{instructionText}</h1>}
+      </div>
+      {showLogoTransition && <LogoTransition />}
+    </>
   );
 };
 

@@ -35,11 +35,16 @@ const rootStyle = (isHiddenResult: boolean) => css`
 const App = () => {
   const { pathname } = useLocation();
   const isHiddenResult = pathname === "/hidden-result";
+  const usingSlide =
+    pathname === "/" ||
+    pathname === "/about" ||
+    pathname === "/playintro" ||
+    pathname === "/jobselect";
 
   return (
     <div css={() => rootStyle(isHiddenResult)} id="app">
       <TopButton />
-      <SlideRoutes duration={1000}>
+      <SlideRoutes duration={usingSlide ? 1000 : 0}>
         <Route path="/" element={<Main />}></Route>
         <Route path="/about" element={<About />}></Route>
         <Route path="/playintro" element={<PlayIntro />}></Route>
