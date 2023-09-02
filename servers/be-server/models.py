@@ -57,7 +57,7 @@ class User(db.Model):
 
 
 # load database
-def load_data_from_csv(job_csv_file, loading_message_csv_file):
+def load_data_from_csv(job_csv_file): #loading_message_csv_file
     with open(job_csv_file, 'r') as file:
         csv_data = csv.DictReader(file)
         for row in csv_data:
@@ -87,7 +87,7 @@ def commit_session():
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
-        load_data_from_csv('/Users/R5Z/Desktop/martha-2023/servers/be-server/joblist.csv') # 로컬 경로로 조정하여 사용
+        load_data_from_csv('/Users/jiwoo/Project/martha-2023/servers/be-server/joblist.csv') # 로컬 경로로 조정하여 사용
         # load_data_from_csv('/Users/R5Z/Desktop/martha-2023/servers/be-server/joblist.csv',
         #                    '/Users/R5Z/Desktop/martha-2023/servers/be-server/loadingmessages.csv') # 로컬 경로로 조정하여 사용
         db.session.commit()
