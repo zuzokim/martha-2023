@@ -11,7 +11,7 @@ import html2canvas from "html2canvas";
 import { useJobSelectStore } from "./store";
 import { connect } from "socket.io-client";
 import { nanoid } from "nanoid";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import LogoTransition from "./LogoTransition";
 
 const headerTextStyle = css`
@@ -110,7 +110,6 @@ const BottomButton = (props: BottomButtonProps) => {
     const socket = connect(URL);
     socket.emit("CreateMap", `${selectedJobInfo?.jobType}`);
     try {
-      console.log(selectedJobInfo.jobId, clientUserId, "here");
       const response = await fetch(
         `http://192.168.0.36:5000/job_list/${selectedJobInfo.jobId}`,
         {
@@ -129,7 +128,7 @@ const BottomButton = (props: BottomButtonProps) => {
 
   const handleCapture = () => {
     const onSaveAs = (uri: string, filename: string) => {
-      console.log("save");
+      localStorage.setItem("capturedOnce", `Martha_2023_${clientUserId}.png`);
       let link = document.createElement("a");
       document.body.appendChild(link);
       link.href = uri;
@@ -177,6 +176,7 @@ const BottomButton = (props: BottomButtonProps) => {
   const jobSelected = pathname === "/jobselect";
 
   const clientUserId = localStorage.getItem("userId");
+  const capturedOnce = localStorage.getItem("capturedOnce");
   useEffect(() => {
     if (!clientUserId) localStorage.setItem("userId", nanoid());
   }, [clientUserId]);
