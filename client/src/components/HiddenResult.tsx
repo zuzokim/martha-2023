@@ -167,6 +167,7 @@ const textStyle = () => css`
   padding: 0px 20px 0px 30px;
   position: relative;
   z-index: 2;
+  white-space: pre-wrap;
 `;
 
 export interface HiddenResultProps {}

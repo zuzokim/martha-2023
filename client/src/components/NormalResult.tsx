@@ -43,6 +43,7 @@ const textStyle = () => css`
   letter-spacing: 0.125;
   color: var(--martha-secondary-color);
   padding: 0px 20px 0px 30px;
+  white-space: pre-wrap;
 `;
 
 export interface NormalResultProps {}
