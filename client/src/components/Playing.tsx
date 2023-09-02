@@ -10,9 +10,52 @@ const rootStyle = css`
   height: calc(var(--1svh, 1vh) * 100);
   height: 100svh;
 `;
-const gifContainerStyle = css`
+const gifContainerStyle = (triggerFound: boolean) => css`
   position: relative;
   height: 100%;
+  ${triggerFound &&
+  css`
+    animation: fadeout 2s;
+    -moz-animation: fadeout 2s; /* Firefox */
+    -webkit-animation: fadeout 2s; /* Safari and Chrome */
+    -o-animation: fadeout 2s; /* Opera */
+    animation-fill-mode: forwards;
+    @keyframes fadeout {
+      from {
+        opacity: 1;
+      }
+      to {
+        opacity: 0;
+      }
+    }
+    @-moz-keyframes fadeout {
+      /* Firefox */
+      from {
+        opacity: 1;
+      }
+      to {
+        opacity: 0;
+      }
+    }
+    @-webkit-keyframes fadeout {
+      /* Safari and Chrome */
+      from {
+        opacity: 1;
+      }
+      to {
+        opacity: 0;
+      }
+    }
+    @-o-keyframes fadeout {
+      /* Opera */
+      from {
+        opacity: 1;
+      }
+      to {
+        opacity: 0;
+      }
+    }
+  `}
 `;
 
 const playingGifStyle = (playing: boolean) => css`
@@ -332,7 +375,7 @@ const Playing = (props: PlayingProps) => {
 
   return (
     <div css={rootStyle}>
-      <div css={gifContainerStyle}>
+      <div css={gifContainerStyle(triggerFound)}>
         <img
           src={playGif}
           alt="playing"
