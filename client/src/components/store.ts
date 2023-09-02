@@ -53,25 +53,12 @@ export const useJobSelectStore = create<JobSelectStoreState>((set) => ({
   },
   setSelectedJobInfo: (jobName) => {
     set(({ jobList }) => {
-      console.log(jobName, "on store");
+      const selectedJobInfo = jobList?.find(
+        (job) => job.jobName === (jobName ?? "우주 엘리베이터 안내원")
+      );
       return {
         //set the jobList with queried jobList from server.
-        selectedJobInfo: (jobList
-          ? jobList
-          : [
-              {
-                jobName: "우주 엘리베이터 안내원",
-                jobId: 14,
-                jobType: "COSMIC" as JobType,
-              },
-            ]
-        ).find(
-          (job) => job.jobName === (jobName ?? "우주 엘리베이터 안내원")
-        ) ?? {
-          jobName: "우주 엘리베이터 안내원",
-          jobId: Math.random(),
-          jobType: "COSMIC" as JobType,
-        },
+        selectedJobInfo,
       };
     });
   },

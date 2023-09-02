@@ -4,6 +4,7 @@ import { useJobSelectStore } from "./store";
 import { connect } from "socket.io-client";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { DateTime } from "luxon";
 
 const rootStyle = css`
   height: calc(var(--1svh, 1vh) * 100);
@@ -239,8 +240,8 @@ const triggerFoundTextStyle = css`
 
 type PlayStatusData = {
   userId: string;
-  startTime?: string;
-  endTime?: string;
+  startTime?: string | null;
+  endTime?: string | null;
   selectedJobId?: number;
 };
 
@@ -256,6 +257,10 @@ const Playing = (props: PlayingProps) => {
 
   const URL = `http://192.168.0.36:8000`;
   const socket = connect(URL);
+
+  const dateTime = DateTime.now()
+    .setZone("Asia/Seoul")
+    .toFormat("yyyy-MM-dd'T'HH:mm:ss");
 
   useEffect(() => {
     socket.on("OnPlay", (data) => {
@@ -274,10 +279,13 @@ const Playing = (props: PlayingProps) => {
   const { selectedJobInfo } = useJobSelectStore();
   const clientUserId = localStorage.getItem("userId") ?? "";
 
-  async function savePlay(playStatusData: PlayStatusData) {
+  async function savePlay(
+    playStatusData: PlayStatusData,
+    status: "play" | "end"
+  ) {
     try {
-      const response = await fetch(`http://127.0.0.1:5000/play`, {
-        method: "POST",
+      const response = await fetch(`http://192.168.0.36:5000/play`, {
+        method: status === "play" ? "POST" : "PUT",
         headers: {
           "Content-Type": "application/json",
         },
@@ -290,26 +298,14 @@ const Playing = (props: PlayingProps) => {
   }
 
   useEffect(() => {
-    if (playStatus === "Playing") {
-      const playStartingData = {
-        userId: clientUserId,
-        startTime: new Date().toISOString(),
-        selectedJobId: selectedJobInfo.jobId,
-      };
-      savePlay(playStartingData);
-    }
-  }, [playStatus]);
-
-  useEffect(() => {
     if (resultStatus) {
       socket.emit("Init", "Init");
 
       const playFinishingData = {
         userId: clientUserId,
-        endTime: new Date().toISOString(),
-        // selectedJobId: selectedJobInfo.jobId,
+        endTime: dateTime,
       };
-      savePlay(playFinishingData);
+      savePlay(playFinishingData, "end");
     }
   }, [resultStatus]);
 
@@ -323,10 +319,16 @@ const Playing = (props: PlayingProps) => {
     }
   }, [resultStatus]);
 
-  const triggerFound = playStatus === "TriggerFound";
+  useEffect(() => {
+    const playStartingData = {
+      userId: clientUserId,
+      startTime: dateTime,
+    };
 
-  console.log(playStatus, "playStatus");
-  console.log(resultStatus, "resultStatus");
+    savePlay(playStartingData, "play");
+  }, []);
+
+  const triggerFound = playStatus === "TriggerFound";
 
   return (
     <div css={rootStyle}>

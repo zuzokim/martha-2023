@@ -100,6 +100,22 @@ const BottomButton = (props: BottomButtonProps) => {
     const URL = `http://192.168.0.36:8000`;
     const socket = connect(URL);
     socket.emit("CreateMap", `${selectedJobInfo?.jobType}`);
+    try {
+      console.log(selectedJobInfo.jobId, clientUserId, "here");
+      const response = await fetch(
+        `http://192.168.0.36:5000/job_list/${selectedJobInfo.jobId}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userId: clientUserId }),
+        }
+      );
+    } catch (error) {
+      console.log(error);
+      // throw new Error(error.message);
+    }
   };
 
   const handleCapture = () => {
@@ -132,8 +148,11 @@ const BottomButton = (props: BottomButtonProps) => {
       textContainer?.setAttribute("style", "height: fit-content");
       imageContainer?.setAttribute("style", "visibility: hidden;");
 
-      html2canvas(app).then((canvas) => {
-        onSaveAs(canvas.toDataURL("image/png"), "normal-result-download.png");
+      html2canvas(app, { useCORS: true }).then((canvas) => {
+        onSaveAs(
+          canvas.toDataURL("image/png"),
+          `Martha_2023_${clientUserId}.png`
+        );
         app.setAttribute("style", "");
         normalResultContainer?.setAttribute("style", "");
         hiddenResultContainer?.setAttribute("style", "");
@@ -151,7 +170,7 @@ const BottomButton = (props: BottomButtonProps) => {
   const clientUserId = localStorage.getItem("userId");
   useEffect(() => {
     if (!clientUserId) localStorage.setItem("userId", nanoid());
-  }, []);
+  }, [clientUserId]);
 
   return (
     <div
