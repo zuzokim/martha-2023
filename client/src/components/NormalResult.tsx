@@ -1,6 +1,4 @@
 import { css } from "@emotion/react";
-import { introText } from "./constants";
-import { useLocation } from "react-router-dom";
 import Haemonging from "./Haemonging";
 import { useEffect, useState } from "react";
 

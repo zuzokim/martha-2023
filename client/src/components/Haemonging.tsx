@@ -1,5 +1,5 @@
 import { css } from "@emotion/react";
-import HaemongingGif from "../../public/assets/svgs/haemonging.gif"; //TODO: change gif
+import HaemongingGif from "../../public/assets/svgs/haemonging.gif";
 import { generateRandomIndex, haemongingText } from "./constants";
 
 

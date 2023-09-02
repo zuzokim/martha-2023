@@ -1,11 +1,7 @@
 import { css } from "@emotion/react";
-import { introText } from "./constants";
-import { useJobSelectStore } from "./store";
-import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Haemonging from "./Haemonging";
 const { VITE_SOCKET_SERVER_URL, VITE_FLASK_SERVER_URL } = import.meta.env;
-import samplePng from "../../public/assets/svgs/brain6.png";
 import GradientPng from "../../public/assets/svgs/gradient.png";
 
 const gradientStyle = css`
