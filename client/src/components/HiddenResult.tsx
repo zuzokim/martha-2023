@@ -286,12 +286,7 @@ const HiddenResult = (props: HiddenResultProps) => {
             css={imageBackgroundShadowStyle}
             data-html2canvas-ignore="true"
           />
-          <img
-            // src={`${VITE_FLASK_SERVER_URL}/static/${data?.hiddenResult.generatedImageName}`}
-            src={samplePng}
-            alt="generated_image"
-            css={imageStyle}
-          />
+          {src && <img src={src} alt="generated_image" css={imageStyle} />}
         </div>
         <div css={textContainerGradientStyle} data-html2canvas-ignore="true" />
         <div css={textContainerStyle} id="text-container">
