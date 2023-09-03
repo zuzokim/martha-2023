@@ -98,7 +98,7 @@ const JobSelect = (props: JobSelectProps) => {
     const clientUserId = localStorage.getItem("userId") ?? "";
     const getJobList = async () => {
       try {
-        const response = await fetch("http://192.168.0.36:5000/job_list");
+        const response = await fetch("${VITE_FLASK_SERVER_URL}/job_list");
         const jsonData = await response.json();
         setJobList(jsonData.jobList);
         setSelectedJobInfo(jsonData[13]?.jobName);

@@ -53,7 +53,7 @@ const NormalResult = (props: NormalResultProps) => {
   async function getNormalResult() {
     try {
       const waitForHaemonging = await fetch(
-        `http://192.168.0.36:5000/waitfor_result?userId=${userId}`,
+        `${VITE_FLASK_SERVER_URL}/waitfor_result?userId=${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -68,7 +68,7 @@ const NormalResult = (props: NormalResultProps) => {
 
       if (Boolean(waitForHaemonging)) {
         const response = await fetch(
-          `http://192.168.0.36:5000/result?userId=${userId}`,
+          `${VITE_FLASK_SERVER_URL}/result?userId=${userId}`,
           {
             headers: {
               "Content-Type": "application/json",

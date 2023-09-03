@@ -146,7 +146,7 @@ const CreateMap = (props: CreateMapProps) => {
   const [mapCreated, setMapCreated] = useState(false);
   const [readyToPlay, setMapReadyToPlay] = useState(false);
 
-  const URL = `http://192.168.0.36:8000`;
+  const URL = `${VITE_SOCKET_SERVER_URL}`;
   const socket = connect(URL);
 
   useEffect(() => {
