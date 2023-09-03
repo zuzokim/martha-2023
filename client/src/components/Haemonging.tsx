@@ -94,7 +94,7 @@ const haemongingTextStyle = css`
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -100%);
   text-align: center;
   word-break: keep-all;
   width: 300px;

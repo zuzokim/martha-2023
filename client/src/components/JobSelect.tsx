@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import Picker from "react-mobile-picker";
 
 const containerStyle = () => css`
-  height: 60vh;
+  height: 55vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -40,7 +40,7 @@ const jobSelectContainerStyle = () => css`
           .picker-item {
             cursor: pointer;
             color: var(--martha-secondary-color);
-            font-size: 17px;
+            font-size: 16px;
           }
           .picker-item-selected {
             color: white !important;
@@ -119,7 +119,7 @@ const JobSelect = (props: JobSelectProps) => {
           onChange={handleChange}
           // onClick={handleClick}
           height={476}
-          itemHeight={44}
+          itemHeight={40}
         />
       </div>
     </div>

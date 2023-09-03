@@ -5,16 +5,20 @@ import HeaderRoundPng from "../../public/assets/svgs/header_round.png";
 import { css } from "@emotion/react";
 import { useLocation, useNavigate } from "react-router";
 
-const headerTextStyle = css`
+const headerTextStyle = (isHiddenResultPage: boolean) => css`
   font-family: var(--martha-font-arita-dotum-medium);
   color: var(--martha-secondary-color);
-  font-size: 15px;
+  font-size: 16px;
   line-height: 1;
   position: absolute;
   top: 45%;
   left: 50%;
   transform: translate(-50%, -100%);
   white-space: nowrap;
+  ${isHiddenResultPage &&
+  css`
+    margin-top: 16px;
+  `}
 `;
 
 export interface TopButtonProps {}
@@ -93,13 +97,17 @@ const TopButton = (props: TopButtonProps) => {
             justify-content: center;
             width: ${isHiddenResultPage ? "60%" : "50%"};
             display: block;
+            ${isHiddenResultPage &&
+            css`
+              margin-top: 8px;
+            `}
           `}
           alt="headerButton"
           onClick={() => handleClick("/about")}
           {...others}
         />
       )}
-      <h1 css={headerTextStyle}>{headerText}</h1>
+      <h1 css={headerTextStyle(isHiddenResultPage)}>{headerText}</h1>
     </div>
   );
 };

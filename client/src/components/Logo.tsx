@@ -11,7 +11,7 @@ const Logo = (props: LogoProps) => {
       alt="vertical_martha_logo"
       css={css`
         display: block;
-        height: 100%;
+        height: 92%;
         aspect-ratio: 1 / 4.65;
       `}
       {...others}

@@ -3,7 +3,7 @@ import Haemonging from "./Haemonging";
 import { useEffect, useState } from "react";
 
 const normalResultContainerStyle = () => css`
-  height: 60vh;
+  height: 55vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -36,7 +36,7 @@ const textContainerStyle = css`
 `;
 
 const textStyle = () => css`
-  font-size: 17px;
+  font-size: 16px;
   line-height: 1.8;
   letter-spacing: 0.125;
   color: var(--martha-secondary-color);

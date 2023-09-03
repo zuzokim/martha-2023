@@ -193,6 +193,8 @@ const BottomButton = (props: BottomButtonProps) => {
     };
   }, [pathname]);
 
+  const isMain = pathname === "/";
+
   return (
     <>
       <div
@@ -250,7 +252,7 @@ const BottomButton = (props: BottomButtonProps) => {
                 height: auto;
               `}
               display: block;
-              margin-left: 24px;
+              margin-left: ${isMain ? "0" : "16px"};
               &:active {
                 opacity: 0.7;
               }

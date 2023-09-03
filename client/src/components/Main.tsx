@@ -2,7 +2,7 @@ import { css } from "@emotion/react";
 import Logo from "./Logo";
 
 const mainContainerStyle = () => css`
-  height: 60vh;
+  height: 55vh;
   display: flex;
   flex-direction: column;
   justify-content: center;

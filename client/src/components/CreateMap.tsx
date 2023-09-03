@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const rootStyle = css`
-  height: 60vh;
+  height: 55vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -14,7 +14,7 @@ const rootStyle = css`
 `;
 const gifContainerStyle = css`
   position: relative;
-  height: 60vh;
+  height: 55vh;
 `;
 
 const createMapGifStyle = (mapCreated: boolean) => css`
