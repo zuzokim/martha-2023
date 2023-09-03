@@ -113,7 +113,6 @@ const haemongingTextStyle = css`
   }
 `;
 
-
 export interface HaemongingProps {
   haemongDone: boolean;
 }
@@ -135,7 +134,7 @@ const Haemonging = (props: HaemongingProps) => {
 
   return (
     <div
-      css={rootStyle(false)}
+      css={rootStyle(haemongDone)}
       {...others}
       id="haemonging"
       data-html2canvas-ignore="true"
@@ -144,9 +143,7 @@ const Haemonging = (props: HaemongingProps) => {
         <img src={HaemongingGif} alt="haemonging" css={haemongingGifStyle} />
       </div>
       <div css={heamongingTextWrapperStyle}>
-        <p css={haemongingTextStyle}>
-          {haemongingText[currentIndex]}
-        </p>
+        <p css={haemongingTextStyle}>{haemongingText[currentIndex]}</p>
       </div>
     </div>
   );
