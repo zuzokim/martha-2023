@@ -298,7 +298,7 @@ const Playing = (props: PlayingProps) => {
     null
   );
 
-  const URL = `http://192.168.0.36:8000`;
+  const URL = `${VITE_SOCKET_SERVER_URL}`;
   const socket = connect(URL);
 
   const dateTime = DateTime.now()
@@ -327,7 +327,7 @@ const Playing = (props: PlayingProps) => {
     status: "play" | "end"
   ) {
     try {
-      const response = await fetch(`http://192.168.0.36:5000/play`, {
+      const response = await fetch(`${VITE_FLASK_SERVER_URL}/play`, {
         method: status === "play" ? "POST" : "PUT",
         headers: {
           "Content-Type": "application/json",

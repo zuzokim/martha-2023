@@ -106,12 +106,12 @@ const BottomButton = (props: BottomButtonProps) => {
   const { selectedJobInfo } = useJobSelectStore();
 
   const handleSelect = async () => {
-    const URL = `http://192.168.0.36:8000`;
+    const URL = `${VITE_SOCKET_SERVER_URL}`;
     const socket = connect(URL);
     socket.emit("CreateMap", `${selectedJobInfo?.jobType}`);
     try {
       const response = await fetch(
-        `http://192.168.0.36:5000/job_list/${selectedJobInfo.jobId}`,
+        `${VITE_FLASK_SERVER_URL}/job_list/${selectedJobInfo.jobId}`,
         {
           method: "POST",
           headers: {

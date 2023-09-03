@@ -177,7 +177,7 @@ const HiddenResult = (props: HiddenResultProps) => {
   async function getHiddenResult() {
     try {
       const waitForHaemonging = await fetch(
-        `http://192.168.0.36:5000/waitfor_hidden_result?userId=${userId}`,
+        `${VITE_FLASK_SERVER_URL}/waitfor_hidden_result?userId=${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -191,7 +191,7 @@ const HiddenResult = (props: HiddenResultProps) => {
 
       if (Boolean(waitForHaemonging)) {
         const response = await fetch(
-          `http://192.168.0.36:5000/hidden_result?userId=${userId}`,
+          `${VITE_FLASK_SERVER_URL}/hidden_result?userId=${userId}`,
           {
             headers: {
               "Content-Type": "application/json",
