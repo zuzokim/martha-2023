@@ -17,7 +17,7 @@ import BottomButton from "./components/BottomButton.tsx";
 import "large-small-dynamic-viewport-units-polyfill";
 import { nanoid } from "nanoid";
 
-const rootStyle = (isHiddenResult: boolean) => css`
+const rootStyle = (isHiddenResult: boolean, isNormalResult: boolean) => css`
   height: calc(var(--1svh, 1vh) * 100);
   height: 100svh;
   display: flex;
@@ -25,6 +25,10 @@ const rootStyle = (isHiddenResult: boolean) => css`
   justify-content: center;
   align-items: center;
   gap: ${isHiddenResult ? "0" : "28px"};
+  ${isNormalResult &&
+  css`
+    gap: 16px;
+  `}
   position: relative;
   .slide-routes {
     /* need to be set to 100% for 'fullpage' slides */
@@ -35,6 +39,7 @@ const rootStyle = (isHiddenResult: boolean) => css`
 const App = () => {
   const { pathname } = useLocation();
   const isHiddenResult = pathname === "/hidden-result";
+  const isNormalResult = pathname === "/normal-result";
   const usingSlide =
     pathname === "/" ||
     pathname === "/about" ||
@@ -42,7 +47,7 @@ const App = () => {
     pathname === "/jobselect";
 
   return (
-    <div css={() => rootStyle(isHiddenResult)} id="app">
+    <div css={() => rootStyle(isHiddenResult, isNormalResult)} id="app">
       <TopButton />
       <SlideRoutes duration={usingSlide ? 1000 : 0}>
         <Route path="/" element={<Main />}></Route>

@@ -2,9 +2,8 @@ import { css } from "@emotion/react";
 import { introText } from "./constants";
 import { useLocation } from "react-router-dom";
 
-
 const playIntroContainerStyle = () => css`
-  height: 60vh;
+  height: 55vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -18,7 +17,6 @@ const textContainerStyle = css`
   border-radius: 12px;
   background-size: 100%;
   background-image: url("../../public/assets/svgs/text_frame.png");
-
   ::-webkit-scrollbar-track {
     background-color: transparent;
     width: 20px;
@@ -37,7 +35,7 @@ const textContainerStyle = css`
 `;
 
 const textStyle = () => css`
-  font-size: 17px;
+  font-size: 16px;
   line-height: 1.8;
   letter-spacing: 0.125;
   color: var(--martha-secondary-color);

@@ -19,6 +19,7 @@ const gradientStyle = css`
 `;
 
 const hiddenResultContainerStyle = () => css`
+  margin-top: -1px;
   height: 67vh;
   display: flex;
   flex-direction: column;
@@ -68,7 +69,7 @@ const imageCircularBackGroundContainerStyle = css`
   display: flex;
   justify-content: center;
   position: relative;
-  margin-top: -18px;
+  margin-top: -20px;
 `;
 
 const imageBackgroundStyle = css`
@@ -108,12 +109,12 @@ const textContainerGradientStyle = css`
   width: 300px;
   height: 200px;
   position: absolute;
-  top: 55%;
+  top: 55.8%;
   z-index: -1;
 `;
 
 const textContainerStyle = css`
-  margin-top: -24px;
+  margin-top: -20px;
   margin-bottom: 8px;
   position: relative;
   overflow-y: scroll;
@@ -156,7 +157,7 @@ const textContainerStyle = css`
 `;
 
 const textStyle = () => css`
-  font-size: 17px;
+  font-size: 16px;
   line-height: 1.8;
   letter-spacing: 0.125;
   color: var(--martha-secondary-color);
