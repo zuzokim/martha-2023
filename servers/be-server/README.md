@@ -14,5 +14,11 @@
     (mac OS) source venv/bin/activate | (Windows) . venv/bin/activate
     pip install -r requirements.txt
     python models.py #db set. /instance/db
-    flask --debug run
+    python app.py
+    ```
+
+  - Archive the play database
+
+    ```
+    python archive.py
     ```
