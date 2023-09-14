@@ -40,7 +40,7 @@ const TopButton = (props: TopButtonProps) => {
       break;
     case "/playintro":
       src = HeaderRoundPng;
-      headerText = "플레이 안내";
+      headerText = "검사 안내";
       break;
     case "/jobselect":
       src = HeaderRoundPng;
@@ -52,11 +52,11 @@ const TopButton = (props: TopButtonProps) => {
       break;
     case "/normal-result":
       src = HeaderRoundPng;
-      headerText = "당신이 꾼 꿈은..";
+      headerText = "검사 결과";
       break;
     case "/hidden-result":
       src = HeaderRoundPng;
-      headerText = "당신이 꾼 꿈은..";
+      headerText = "검사 결과";
       break;
   }
 

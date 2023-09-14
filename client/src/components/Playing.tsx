@@ -377,6 +377,27 @@ const Playing = (props: PlayingProps) => {
 
   const triggerFound = playStatus === "TriggerFound";
 
+  const initialTime = 120;
+  const [time, setTime] = useState<number>(initialTime);
+
+  const formatTime = (seconds: number) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes.toString().padStart(2, "0")}:${remainingSeconds
+      .toString()
+      .padStart(2, "0")}`;
+  };
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      if (time > 0) {
+        setTime(time - 1);
+      }
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [time]);
+
   return (
     <div css={rootStyle}>
       <div css={gifContainerStyle(triggerFound)}>
@@ -399,7 +420,7 @@ const Playing = (props: PlayingProps) => {
           사운드에 집중하세요
         </div>
         {triggerFound && (
-          <h1 css={triggerFoundTextStyle}>숨겨진 트리거를 발견했습니다</h1>
+          <h1 css={triggerFoundTextStyle}>베타파형과 결합을 완료했습니다!</h1>
         )}
       </div>
     </div>

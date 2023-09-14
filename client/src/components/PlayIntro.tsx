@@ -36,7 +36,7 @@ const textContainerStyle = css`
 
 const textStyle = () => css`
   font-size: 16px;
-  line-height: 1.8;
+  line-height: 2;
   letter-spacing: 0.125;
   color: var(--martha-secondary-color);
   padding: 0px 20px 0px 30px;
