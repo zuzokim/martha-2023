@@ -5,10 +5,25 @@
 }
 
 @font-face {
+  font-family: "KoPubWorldDotumBold";
+  src: url("../public/assets/fonts/KoPubWorldDotumBold.woff") format("woff");
+}
+
+@font-face {
   font-family: "Arita-dotum-Medium";
   src: url("../public/assets/fonts/아리따-돋움\(TTF\)-Medium.woff")
     format("woff");
   /* src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/Arita-dotum-Medium.woff') format('woff'); */
+}
+
+@font-face {
+  font-family: "HelveticaNeueLTStd-Ex";
+  src: url("../public/assets/fonts/HelveticaNeueLTStd-Ex.otf") format("woff");
+}
+
+@font-face {
+  font-family: "Baunk";
+  src: url("../public/assets/fonts/Baunk.woff") format("woff");
 }
 
 :root {

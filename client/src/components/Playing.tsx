@@ -5,6 +5,7 @@ import { connect } from "socket.io-client";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { DateTime } from "luxon";
+const { VITE_SOCKET_SERVER_URL, VITE_FLASK_SERVER_URL } = import.meta.env;
 
 const rootStyle = css`
   height: calc(var(--1svh, 1vh) * 100);
@@ -117,6 +118,9 @@ const playingGifStyle = (playing: boolean) => css`
 `;
 
 const playingGuideTextStyle = css`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   position: absolute;
   margin: 0;
   bottom: 100px;
@@ -124,7 +128,7 @@ const playingGuideTextStyle = css`
   transform: translateX(-50%);
   font-size: 17px;
   -webkit-text-fill-color: white; /* Will override color (regardless of order) */
-  -webkit-text-stroke-width: 0.5px;
+  -webkit-text-stroke-width: 0.3px;
   -webkit-text-stroke-color: #c90303; //var(--martha-secondary-color);
   @keyframes fadeinout {
     0% {
@@ -189,14 +193,14 @@ const playingGuideTextStyle = css`
     }
   }
 
-  animation: fadeinout 7s ease-in-out;
-  -moz-animation: fadeinout 7s ease-in-out; /* Firefox */
-  -webkit-animation: fadeinout 7s ease-in-out; /* Safari and Chrome */
-  -o-animation: fadeinout 7s ease-in-out; /* Opera */
+  /* animation: fadeinout 7s ease-in-out;
+  -moz-animation: fadeinout 7s ease-in-out; 
+  -webkit-animation: fadeinout 7s ease-in-out; 
+  -o-animation: fadeinout 7s ease-in-out;
   animation-fill-mode: forwards;
-  -moz-animation-fill-mode: forwards; /* Firefox */
-  -webkit-animation-fill-mode: forwards; /* Safari and Chrome */
-  -o-animation-fill-mode: forwards; /* Opera */
+  -moz-animation-fill-mode: forwards; 
+  -webkit-animation-fill-mode: forwards; 
+  -o-animation-fill-mode: forwards; Opera */
 `;
 
 const triggerFoundTextStyle = css`
@@ -373,6 +377,27 @@ const Playing = (props: PlayingProps) => {
 
   const triggerFound = playStatus === "TriggerFound";
 
+  const initialTime = 120;
+  const [time, setTime] = useState<number>(initialTime);
+
+  const formatTime = (seconds: number) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes.toString().padStart(2, "0")}:${remainingSeconds
+      .toString()
+      .padStart(2, "0")}`;
+  };
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      if (time > 0) {
+        setTime(time - 1);
+      }
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [time]);
+
   return (
     <div css={rootStyle}>
       <div css={gifContainerStyle(triggerFound)}>
@@ -381,9 +406,21 @@ const Playing = (props: PlayingProps) => {
           alt="playing"
           css={playingGifStyle(playStatus === "Playing")}
         />
-        <h1 css={playingGuideTextStyle}>사운드에 집중하세요</h1>
+        <div css={playingGuideTextStyle}>
+          <p
+            css={css`
+              font-family: "Baunk";
+              font-size: 38px;
+              margin: 0;
+              line-height: 1;
+            `}
+          >
+            {formatTime(time)}
+          </p>
+          사운드에 집중하세요
+        </div>
         {triggerFound && (
-          <h1 css={triggerFoundTextStyle}>숨겨진 트리거를 발견했습니다</h1>
+          <h1 css={triggerFoundTextStyle}>베타파형과 결합을 완료했습니다!</h1>
         )}
       </div>
     </div>

@@ -29,7 +29,6 @@ export const usePathStore = create<PathStoreState>((set) => ({
 
     const pathKey = modifiedPathname.length === 0 ? "main" : modifiedPathname; // Remove the leading slash
 
-    // console.log(pathname, "store pathname"); // Output: "pathname"
     set({
       prevPath: PREV_NAV_PATH[pathKey as NavigationType],
       path: pathname,
@@ -65,5 +64,21 @@ export const useJobSelectStore = create<JobSelectStoreState>((set) => ({
   jobList: [],
   setJobList: (jobList) => {
     set({ jobList });
+  },
+}));
+
+export const useErrorStore = create<{
+  hasError: boolean;
+  fromError: boolean;
+  setFromError: (transition: boolean) => void;
+  setHasError: (hasError: boolean) => void;
+}>((set) => ({
+  hasError: false,
+  fromError: false,
+  setFromError: (fromError) => {
+    set({ fromError });
+  },
+  setHasError: (hasError) => {
+    set({ hasError });
   },
 }));

@@ -1,6 +1,7 @@
 import { css } from "@emotion/react";
 import Haemonging from "./Haemonging";
 import { useEffect, useState } from "react";
+const { VITE_SOCKET_SERVER_URL, VITE_FLASK_SERVER_URL } = import.meta.env;
 
 const normalResultContainerStyle = () => css`
   height: 55vh;
@@ -61,7 +62,6 @@ const NormalResult = (props: NormalResultProps) => {
         }
       );
 
-      console.log(waitForHaemonging, "waitForHaemonging");
       const waitForResult = await waitForHaemonging.json();
 
       setHaemongDone(Boolean(waitForResult));

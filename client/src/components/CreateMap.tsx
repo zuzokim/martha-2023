@@ -4,6 +4,7 @@ import { useJobSelectStore } from "./store";
 import { connect } from "socket.io-client";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+const { VITE_SOCKET_SERVER_URL } = import.meta.env;
 
 const rootStyle = css`
   height: 55vh;
@@ -183,8 +184,6 @@ const CreateMap = (props: CreateMapProps) => {
     }
   }, [readyToPlay]);
 
-  console.log(mapCreated, "mapCreated");
-
   return (
     <div css={rootStyle}>
       <div css={gifContainerStyle}>
@@ -194,7 +193,7 @@ const CreateMap = (props: CreateMapProps) => {
           css={createMapGifStyle(mapCreated)}
         />
       </div>
-      {mapCreated && <h1 css={createMapDoneTextStyle}>맵 생성 완료</h1>}
+      {mapCreated && <h1 css={createMapDoneTextStyle}>스캔 준비 완료</h1>}
     </div>
   );
 };
