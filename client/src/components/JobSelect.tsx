@@ -15,11 +15,24 @@ const containerStyle = () => css`
 
 const jobSelectContainerStyle = () => css`
   width: 273px;
-  height: 476px;
+  height: 400px;
+  @media (min-width: 420px) {
+    height: 476px;
+  }
   padding: 0 4px;
   position: relative;
   background-size: contain;
-  background-image: url("../../public/assets/svgs/select_container_bg.png");
+  background: linear-gradient(
+    180deg,
+    #e6f8ff 0%,
+    #efecf3 13.02%,
+    #fbf5fb 33.85%,
+    #fff 50%,
+    #fbf5fb 64.06%,
+    #eaedf4 86.98%,
+    #e6f8ff 100%
+  );
+  /* background-image: url("../../public/assets/svgs/select_container_bg.png"); */
 
   .picker-highlight {
     background-color: var(--martha-secondary-bg-color);
@@ -58,7 +71,6 @@ export interface JobSelectProps {}
 const JobSelect = (props: JobSelectProps) => {
   const {} = props;
 
-  const location = useLocation();
   const { setSelectedJobInfo, selectedJobInfo, setJobList } =
     useJobSelectStore();
 
@@ -81,6 +93,7 @@ const JobSelect = (props: JobSelectProps) => {
         selectedJob: value,
       };
     });
+
     setSelectedJobInfo(value);
     // Check if the `vibrate` function is available (ios not supported)
     if ("vibrate" in window.navigator) {
@@ -118,7 +131,7 @@ const JobSelect = (props: JobSelectProps) => {
           onChange={handleChange}
           // onClick={handleClick}
           height={476}
-          itemHeight={40}
+          itemHeight={37}
         />
       </div>
     </div>

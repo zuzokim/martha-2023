@@ -118,6 +118,9 @@ const playingGifStyle = (playing: boolean) => css`
 `;
 
 const playingGuideTextStyle = css`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   position: absolute;
   margin: 0;
   bottom: 100px;
@@ -125,7 +128,7 @@ const playingGuideTextStyle = css`
   transform: translateX(-50%);
   font-size: 17px;
   -webkit-text-fill-color: white; /* Will override color (regardless of order) */
-  -webkit-text-stroke-width: 0.5px;
+  -webkit-text-stroke-width: 0.3px;
   -webkit-text-stroke-color: #c90303; //var(--martha-secondary-color);
   @keyframes fadeinout {
     0% {
@@ -190,14 +193,14 @@ const playingGuideTextStyle = css`
     }
   }
 
-  animation: fadeinout 7s ease-in-out;
-  -moz-animation: fadeinout 7s ease-in-out; /* Firefox */
-  -webkit-animation: fadeinout 7s ease-in-out; /* Safari and Chrome */
-  -o-animation: fadeinout 7s ease-in-out; /* Opera */
+  /* animation: fadeinout 7s ease-in-out;
+  -moz-animation: fadeinout 7s ease-in-out; 
+  -webkit-animation: fadeinout 7s ease-in-out; 
+  -o-animation: fadeinout 7s ease-in-out;
   animation-fill-mode: forwards;
-  -moz-animation-fill-mode: forwards; /* Firefox */
-  -webkit-animation-fill-mode: forwards; /* Safari and Chrome */
-  -o-animation-fill-mode: forwards; /* Opera */
+  -moz-animation-fill-mode: forwards; 
+  -webkit-animation-fill-mode: forwards; 
+  -o-animation-fill-mode: forwards; Opera */
 `;
 
 const triggerFoundTextStyle = css`
@@ -382,7 +385,19 @@ const Playing = (props: PlayingProps) => {
           alt="playing"
           css={playingGifStyle(playStatus === "Playing")}
         />
-        <h1 css={playingGuideTextStyle}>사운드에 집중하세요</h1>
+        <div css={playingGuideTextStyle}>
+          <p
+            css={css`
+              font-family: "Baunk";
+              font-size: 38px;
+              margin: 0;
+              line-height: 1;
+            `}
+          >
+            {formatTime(time)}
+          </p>
+          사운드에 집중하세요
+        </div>
         {triggerFound && (
           <h1 css={triggerFoundTextStyle}>숨겨진 트리거를 발견했습니다</h1>
         )}

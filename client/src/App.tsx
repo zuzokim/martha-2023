@@ -28,11 +28,11 @@ const rootStyle = (isHiddenResult: boolean, isNormalResult: boolean) => css`
   justify-content: center;
   align-items: center;
   gap: ${isHiddenResult ? "0" : "28px"};
+  position: relative;
   ${isNormalResult &&
   css`
     gap: 16px;
   `}
-  position: relative;
   .slide-routes {
     /* need to be set to 100% for 'fullpage' slides */
     width: 100%;

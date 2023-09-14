@@ -11,6 +11,16 @@
   /* src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/Arita-dotum-Medium.woff') format('woff'); */
 }
 
+@font-face {
+  font-family: "HelveticaNeueLTStd-Ex";
+  src: url("../public/assets/fonts/HelveticaNeueLTStd-Ex.otf") format("woff");
+}
+
+@font-face {
+  font-family: "Baunk";
+  src: url("../public/assets/fonts/Baunk.woff") format("woff");
+}
+
 :root {
   font-family: "KoPubWorld";
   /* "Arita-dotum-Medium", Arial, Helvetica, sans-serif; */
