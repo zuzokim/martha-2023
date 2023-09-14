@@ -4,6 +4,7 @@ import { useJobSelectStore } from "./store";
 import { connect } from "socket.io-client";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+const { VITE_SOCKET_SERVER_URL } = import.meta.env;
 
 const rootStyle = css`
   height: 55vh;

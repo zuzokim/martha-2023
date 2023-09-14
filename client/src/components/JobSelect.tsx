@@ -1,9 +1,9 @@
 import { css } from "@emotion/react";
 import { jobNameList } from "./constants";
-import { useLocation } from "react-router-dom";
 import { useJobSelectStore } from "./store";
 import { useEffect, useState } from "react";
 import Picker from "react-mobile-picker";
+const { VITE_SOCKET_SERVER_URL, VITE_FLASK_SERVER_URL } = import.meta.env;
 
 const containerStyle = () => css`
   height: 55vh;
@@ -95,10 +95,9 @@ const JobSelect = (props: JobSelectProps) => {
   }, []);
 
   useEffect(() => {
-    const clientUserId = localStorage.getItem("userId") ?? "";
     const getJobList = async () => {
       try {
-        const response = await fetch("${VITE_FLASK_SERVER_URL}/job_list");
+        const response = await fetch(`${VITE_FLASK_SERVER_URL}/job_list`);
         const jsonData = await response.json();
         setJobList(jsonData.jobList);
         setSelectedJobInfo(jsonData[13]?.jobName);

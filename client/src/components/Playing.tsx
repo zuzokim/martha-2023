@@ -5,6 +5,7 @@ import { connect } from "socket.io-client";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { DateTime } from "luxon";
+const { VITE_SOCKET_SERVER_URL, VITE_FLASK_SERVER_URL } = import.meta.env;
 
 const rootStyle = css`
   height: calc(var(--1svh, 1vh) * 100);

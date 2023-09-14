@@ -8,11 +8,12 @@ import ArrowRight from "../../public/assets/svgs/arrow_right.png";
 import { css } from "@emotion/react";
 import { useLocation, useNavigate } from "react-router";
 import html2canvas from "html2canvas";
-import { useJobSelectStore } from "./store";
+import { useErrorStore, useJobSelectStore } from "./store";
 import { connect } from "socket.io-client";
 import { nanoid } from "nanoid";
 import { useEffect, useState } from "react";
 import LogoTransition from "./LogoTransition";
+const { VITE_SOCKET_SERVER_URL, VITE_FLASK_SERVER_URL } = import.meta.env;
 
 const headerTextStyle = css`
   font-family: var(--martha-font-arita-dotum-medium);
@@ -38,6 +39,7 @@ const BottomButton = (props: BottomButtonProps) => {
   let instructionText = null;
   let prevPath: string | null = null;
   let nextPath: string | null = null;
+  let state: string | null = "normal";
 
   switch (pathname) {
     case "/":
@@ -68,11 +70,13 @@ const BottomButton = (props: BottomButtonProps) => {
       leftSrc = HomeButtonPng;
       rightSrc = PrintButtonPng;
       prevPath = "/";
+      state = "transition";
       break;
     case "/hidden-result":
       leftSrc = HomeButtonPng;
       rightSrc = PrintButtonPng;
       prevPath = "/";
+      state = "transition";
       break;
   }
 
@@ -80,17 +84,19 @@ const BottomButton = (props: BottomButtonProps) => {
 
   const navigate = useNavigate();
 
-  const [showLogoTransition, setShowLogTransition] = useState(false);
+  const [showLogoTransition, setShowLogoTransition] = useState(false);
+  const { fromError, setFromError } = useErrorStore();
 
   const handlePrevClick = () => {
     if (prevPath) {
-      if (prevPath === "/") {
-        setShowLogTransition(true);
+      if (prevPath === "/" && (state === "transition" || fromError)) {
+        setShowLogoTransition(true);
         setTimeout(() => {
           navigate("/");
         }, 1000);
         //logo transition중에는 다른 인터랙션을 방지해야하므로 clearTimeout하지 않음
         localStorage.removeItem("userId");
+        setFromError(false);
       } else {
         navigate(prevPath);
       }
@@ -185,7 +191,7 @@ const BottomButton = (props: BottomButtonProps) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       if (pathname === "/") {
-        setShowLogTransition(false);
+        setShowLogoTransition(false);
       }
     }, 2500);
     return () => {

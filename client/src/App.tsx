@@ -6,16 +6,19 @@ import {
   PlayIntro,
   CreateMap,
   Playing,
-  Haemonging,
   NormalResult,
   HiddenResult,
+  Error,
 } from "./components";
 import { Route, Routes, useLocation } from "react-router-dom";
 import SlideRoutes from "react-slide-routes";
 import TopButton from "./components/TopButton.tsx";
 import BottomButton from "./components/BottomButton.tsx";
 import "large-small-dynamic-viewport-units-polyfill";
-import { nanoid } from "nanoid";
+import { useEffect, useState } from "react";
+const { VITE_SOCKET_SERVER_URL } = import.meta.env;
+import { connect } from "socket.io-client";
+import { useErrorStore } from "./components/store.ts";
 
 const rootStyle = (isHiddenResult: boolean, isNormalResult: boolean) => css`
   height: calc(var(--1svh, 1vh) * 100);
@@ -46,6 +49,33 @@ const App = () => {
     pathname === "/playintro" ||
     pathname === "/jobselect";
 
+  const URL = `${VITE_SOCKET_SERVER_URL}`;
+  const socket = connect(URL);
+
+  const { setHasError, hasError } = useErrorStore();
+
+  useEffect(() => {
+    socket.on("CreateMap", (data) => {
+      if (data === "Error") {
+        setHasError(true);
+      }
+    });
+    socket.on("OnPlay", (data) => {
+      if (data === "Error") {
+        setHasError(true);
+      }
+    });
+    socket.on("GameOver", (data) => {
+      if (data === "Error") {
+        setHasError(true);
+      }
+    });
+    return () => {
+      socket.off("connect");
+      socket.off("disconnect");
+    };
+  }, [socket]);
+
   return (
     <div css={() => rootStyle(isHiddenResult, isNormalResult)} id="app">
       <TopButton />
@@ -60,6 +90,7 @@ const App = () => {
         <Route path="/hidden-result" element={<HiddenResult />}></Route>
       </SlideRoutes>
       <BottomButton />
+      {hasError && <Error />}
     </div>
   );
 };
