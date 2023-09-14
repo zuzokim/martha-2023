@@ -87,6 +87,9 @@ const BottomButton = (props: BottomButtonProps) => {
   const [showLogoTransition, setShowLogoTransition] = useState(false);
   const { fromError, setFromError } = useErrorStore();
 
+  const URL = `${VITE_SOCKET_SERVER_URL}`;
+  const socket = connect(URL);
+
   const handlePrevClick = () => {
     if (prevPath) {
       if (prevPath === "/" && (state === "transition" || fromError)) {
@@ -100,6 +103,7 @@ const BottomButton = (props: BottomButtonProps) => {
       } else {
         navigate(prevPath);
       }
+      socket.emit("Init", "Init");
     }
   };
 

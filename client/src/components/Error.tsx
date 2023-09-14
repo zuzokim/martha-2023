@@ -5,6 +5,8 @@ import { useLocation, useNavigate } from "react-router";
 import { useErrorStore } from "./store";
 import { useEffect, useState } from "react";
 import { LogoTransition } from ".";
+import { connect } from "socket.io-client";
+const { VITE_SOCKET_SERVER_URL } = import.meta.env;
 
 const errorContainerStyle = css`
   border-radius: 8px;
@@ -28,6 +30,9 @@ export interface ErrorProps {}
 
 const Error = (props: ErrorProps) => {
   const { ...others } = props;
+
+  const URL = `${VITE_SOCKET_SERVER_URL}`;
+  const socket = connect(URL);
 
   const navigate = useNavigate();
   const { pathname } = useLocation();
@@ -81,6 +86,7 @@ const Error = (props: ErrorProps) => {
             navigate("/");
             setHasError(false);
             localStorage.removeItem("userId");
+            socket.emit("Init", "Init");
           }}
           {...others}
         />
