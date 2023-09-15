@@ -82,3 +82,13 @@ export const useErrorStore = create<{
     set({ hasError });
   },
 }));
+
+export const useTriggerFoundStore = create<{
+  triggerFound: boolean;
+  setTriggerFound: (transition: boolean) => void;
+}>((set) => ({
+  triggerFound: false,
+  setTriggerFound: (triggerFound) => {
+    set({ triggerFound });
+  },
+}));

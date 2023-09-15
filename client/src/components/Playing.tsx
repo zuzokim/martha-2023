@@ -1,6 +1,6 @@
 import { css } from "@emotion/react";
 import playGif from "../../public/assets/svgs/play.gif";
-import { useJobSelectStore } from "./store";
+import { useJobSelectStore, useTriggerFoundStore } from "./store";
 import { connect } from "socket.io-client";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -16,10 +16,10 @@ const gifContainerStyle = (triggerFound: boolean) => css`
   height: 100%;
   ${triggerFound &&
   css`
-    animation: fadeout 2s;
-    -moz-animation: fadeout 2s; /* Firefox */
-    -webkit-animation: fadeout 2s; /* Safari and Chrome */
-    -o-animation: fadeout 2s; /* Opera */
+    animation: fadeout 4s;
+    -moz-animation: fadeout 4s; /* Firefox */
+    -webkit-animation: fadeout 4s; /* Safari and Chrome */
+    -o-animation: fadeout 4s; /* Opera */
     animation-fill-mode: forwards;
     @keyframes fadeout {
       from {
@@ -219,9 +219,6 @@ const triggerFoundTextStyle = css`
     20% {
       opacity: 1;
     }
-    80% {
-      opacity: 1;
-    }
     100% {
       opacity: 0;
     }
@@ -233,9 +230,6 @@ const triggerFoundTextStyle = css`
       opacity: 0;
     }
     20% {
-      opacity: 1;
-    }
-    80% {
       opacity: 1;
     }
     100% {
@@ -251,9 +245,6 @@ const triggerFoundTextStyle = css`
     20% {
       opacity: 1;
     }
-    80% {
-      opacity: 1;
-    }
     100% {
       opacity: 0;
     }
@@ -265,9 +256,6 @@ const triggerFoundTextStyle = css`
       opacity: 0;
     }
     20% {
-      opacity: 1;
-    }
-    80% {
       opacity: 1;
     }
     100% {
@@ -298,6 +286,7 @@ const Playing = (props: PlayingProps) => {
   const [playStatus, setPlayStatus] = useState<
     "Playing" | "Exiting" | "TriggerFound" | "Error" | null
   >(null);
+  const { triggerFound, setTriggerFound } = useTriggerFoundStore();
   const [resultStatus, setResultStatus] = useState<"Normal" | "Hidden" | null>(
     null
   );
@@ -312,6 +301,9 @@ const Playing = (props: PlayingProps) => {
   useEffect(() => {
     socket.on("OnPlay", (data) => {
       setPlayStatus(data);
+      if (data === "TriggerFound") {
+        setTriggerFound(true);
+      }
     });
     socket.on("GameOver", (data) => {
       setResultStatus(data);
@@ -375,7 +367,11 @@ const Playing = (props: PlayingProps) => {
     savePlay(playStartingData, "play");
   }, []);
 
-  const triggerFound = playStatus === "TriggerFound";
+  useEffect(() => {
+    return () => {
+      setTriggerFound(false);
+    };
+  }, []);
 
   const initialTime = 120;
   const [time, setTime] = useState<number>(initialTime);
@@ -419,10 +415,10 @@ const Playing = (props: PlayingProps) => {
           </p>
           사운드에 집중하세요
         </div>
-        {triggerFound && (
-          <h1 css={triggerFoundTextStyle}>베타파형과 결합을 완료했습니다!</h1>
-        )}
       </div>
+      {triggerFound && (
+        <h1 css={triggerFoundTextStyle}>베타파형과 결합을 완료했습니다!</h1>
+      )}
     </div>
   );
 };
