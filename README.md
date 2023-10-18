@@ -1,11 +1,8 @@
 # MARTHA - 2023
 
-## [client](https://github.com/zuzokim/martha-2023/blob/main/client)
-- 
+https://www.xxomakim.com/martha-reservation
 
-## [servers](https://github.com/zuzokim/martha-2023/tree/main/servers)
-- 
+<img width="3502" alt="martha-flow-mockup" src="https://github.com/zuzokim/martha-2023/assets/54028005/aa8b79b8-94d3-4a80-a4cd-d300243af387">
 
-#### [real-time-server](https://github.com/zuzokim/martha-2023/tree/main/servers/real-time-server) 
-
-#### open-ai-server
+- [client](https://github.com/zuzokim/martha-2023/blob/main/client)
+- [servers](https://github.com/zuzokim/martha-2023/tree/main/servers)
